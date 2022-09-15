@@ -1,9 +1,9 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.unnamed',
-  appName: 'unnamed',
-  webDir: '.output/public',
+  appId: 'com.aks.fnetcalc',
+  appName: 'fnet-calc',
+  webDir: 'dist',
   bundledWebRuntime: false
 };
 

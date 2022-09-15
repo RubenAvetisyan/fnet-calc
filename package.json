@@ -1,4 +1,5 @@
 {
+  "name": "fnetcalc",
   "private": true,
   "packageManager": "pnpm@7.9.0",
   "scripts": {
@@ -8,13 +9,14 @@
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
     "generate": "nuxi generate",
-    "ionic:build": "npm run build",
+    "ionic:build": "npm run generate",
     "ionic:serve": "npm run start"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.2",
     "@iconify-json/carbon": "^1.1.7",
     "@iconify-json/twemoji": "^1.1.5",
+    "@ionic/cli": "6.20.1",
     "@nuxtjs/color-mode": "^3.1.4",
     "@pinia/nuxt": "^0.4.1",
     "@unocss/nuxt": "^0.45.13",
@@ -28,9 +30,11 @@
   "dependencies": {
     "@capacitor/android": "4.2.0",
     "@capacitor/app": "4.0.1",
+    "@capacitor/camera": "4.1.1",
     "@capacitor/cli": "4.2.0",
     "@capacitor/core": "4.2.0",
     "@capacitor/haptics": "4.0.1",
+    "@capacitor/ios": "4.2.0",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
     "@ionic/core": "^6.2.7",

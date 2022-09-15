@@ -1,42 +1,51 @@
 <script setup>
-import {
-  IonPage,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonContent,
-  IonButton
-} from "@ionic/vue"
+const ionRouter = useIonRouter()
 
-const router = useRouter();
+const imageUrl = ref(null)
+const doCamera = async () => {
+  const image = await Camera.getPhoto({
+    quality: 90,
+    allowEditing: true,
+    resultType: CameraResultType.Uri
+  });
 
-const { $isMobile } = useNuxtApp()
+  // image.webPath will contain a path that can be set as an image src.
+  // You can access the original file using image.path, which can be
+  // passed to the Filesystem API to read the raw data of the image,
+  // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+  imageUrl.value = image.webPath;
+
+  // Can be set to the src of an image now
+  // imageElement.src = imageUrl;
+}
+
+definePageMeta({
+  alias: ['/'],
+})
+
+// const { $isMobile } = useNuxtApp()
 </script>
 
 <template>
-  <div>
-    <Logos mb-6 />
-    <IonPage v-if="$isMobile">
-      <IonHeader :translucent="true">
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
+  <IonPage class="text-gray:80">
+    <IonHeader :translucent="true">
+      <IonToolbar>
+        <IonButtons slot="end">
+          <IonButton>LOGOUT</IonButton>
+        </IonButtons>
+        <!-- <IonTitle>Home</IonTitle>
+                                                <IonBadge>Ruben</IonBadge> -->
+        <Logos mb-6 />
         </IonToolbar>
-      </IonHeader>
-      <IonContent class="ion-padding">
-        <h1>WELCOME HOME on IOS AND ANDROID</h1>
-        <IonButton @click="router.push('/about')">
-          Goto About Page
-        </IonButton>
-      </IonContent>
-    </IonPage>
-    <Suspense v-else>
-      <PageView />
-      <template #fallback>
-        <div op50 italic>
-          <span animate-pulse>Loading...</span>
-        </div>
-      </template>
-    </Suspense>
-    <InputEntry />
-  </div>
+        </IonHeader>
+        <IonContent align="center" flex="row" class="ion-padding">
+          <IonButton flex="col" @click="ionRouter.push(`/hi/next`)">
+            Next Page
+          </IonButton>
+          <IonButton flex="col" @click="doCamera">
+            Camera
+          </IonButton>
+          <IonImg :src="imageUrl"></IonImg>
+        </IonContent>
+        </IonPage>
 </template>
