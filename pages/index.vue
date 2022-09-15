@@ -1,4 +1,5 @@
 <script setup>
+import { Camera, CameraResultType } from '@capacitor/camera';
 const ionRouter = useIonRouter()
 
 const imageUrl = ref(null)
@@ -20,6 +21,7 @@ const doCamera = async () => {
 }
 
 definePageMeta({
+  layout: false,
   alias: ['/'],
 })
 
@@ -27,25 +29,13 @@ definePageMeta({
 </script>
 
 <template>
-  <IonPage class="text-gray:80">
-    <IonHeader :translucent="true">
-      <IonToolbar>
-        <IonButtons slot="end">
-          <IonButton>LOGOUT</IonButton>
-        </IonButtons>
-        <!-- <IonTitle>Home</IonTitle>
-                                                <IonBadge>Ruben</IonBadge> -->
-        <Logos mb-6 />
-        </IonToolbar>
-        </IonHeader>
-        <IonContent align="center" flex="row" class="ion-padding">
-          <IonButton flex="col" @click="ionRouter.push(`/hi/next`)">
-            Next Page
-          </IonButton>
-          <IonButton flex="col" @click="doCamera">
-            Camera
-          </IonButton>
-          <IonImg :src="imageUrl"></IonImg>
-        </IonContent>
-        </IonPage>
+  <IonContent align="center" flex="row" class="ion-padding">
+    <IonButton flex="col" @click="ionRouter.push(`/hi/next`)">
+      Next Page
+    </IonButton>
+    <!-- <IonButton flex="col" @click="doCamera">
+                      Camera
+                    </IonButton>
+                    <IonImg :src="imageUrl"></IonImg> -->
+    </IonContent>
 </template>

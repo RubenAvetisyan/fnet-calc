@@ -1,7 +1,8 @@
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
-  // ssr: false,
+  ssr: false,
+  static:true,
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
