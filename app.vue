@@ -7,10 +7,12 @@ useHead({
     },
   ],
 })
+
+const { $isMobile } = useNuxtApp()
 </script>
 
 <template>
-  <NuxtLayout>
+  <NuxtLayout :name="$isMobile ? 'mobile' : 'default'">
     <NuxtPage />
   </NuxtLayout>
 </template>

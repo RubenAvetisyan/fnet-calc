@@ -7,13 +7,14 @@
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "ionic:build": "npm run build",
+    "ionic:serve": "npm run start"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.2",
     "@iconify-json/carbon": "^1.1.7",
     "@iconify-json/twemoji": "^1.1.5",
-    "@kevinmarrec/nuxt-pwa": "^0.4.2",
     "@nuxtjs/color-mode": "^3.1.4",
     "@pinia/nuxt": "^0.4.1",
     "@unocss/nuxt": "^0.45.13",
@@ -21,6 +22,19 @@
     "eslint": "^8.23.0",
     "nuxt": "^3.0.0-rc.8",
     "pinia": "^2.0.21",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "vite-plugin-pwa": "^0.12.7"
+  },
+  "dependencies": {
+    "@capacitor/android": "4.2.0",
+    "@capacitor/app": "4.0.1",
+    "@capacitor/cli": "4.2.0",
+    "@capacitor/core": "4.2.0",
+    "@capacitor/haptics": "4.0.1",
+    "@capacitor/keyboard": "4.0.1",
+    "@capacitor/status-bar": "4.0.1",
+    "@ionic/core": "^6.2.7",
+    "@ionic/vue": "^6.2.7",
+    "mobile-detect": "^1.4.5"
   }
 }
