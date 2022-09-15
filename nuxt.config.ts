@@ -46,5 +46,8 @@ export default defineNuxtConfig({
     workbox: {
       enabled: true
     }
+  },
+  meta: {
+    meta: [{ name: "viewport", content: "width=device-width, initial-scale=1"}]
   }
 })
