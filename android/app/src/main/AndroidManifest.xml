@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aks.family-networf-calculator">
+=======
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.aks.fnetcalc">
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/AppTheme">
 
+<<<<<<< HEAD
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:name="com.aks.family-networf-calculator.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask">
+=======
+        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode" android:name="com.aks.fnetcalc.MainActivity" android:label="@string/title_activity_main" android:theme="@style/AppTheme.NoActionBarLaunch" android:launchMode="singleTask" android:exported="true">
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
         </activity>
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
         </provider>
     </application>
 
     <!-- Permissions -->
 
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>
+=======
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1

@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<<<<<<< HEAD
     <key>NSPhotoLibraryUsageDescription</key>
 	<string>Ionic Nuxt App</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -12,6 +13,12 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
         <string>family-networf-calculator</string>
+=======
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>fNet  Telecom Calculator</string>
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,6 +30,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
+<<<<<<< HEAD
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -33,6 +41,13 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+=======
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -57,4 +72,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
+<<<<<<< HEAD
 </plist>
+=======
+</plist>
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1

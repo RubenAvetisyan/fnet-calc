@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 
+<<<<<<< HEAD
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
 
@@ -57,4 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+=======
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
 }

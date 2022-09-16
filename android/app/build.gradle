@@ -3,7 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
+<<<<<<< HEAD
         applicationId "com.aks.family-networf-calculator"
+=======
+        applicationId "com.aks.fnetcalc"
+>>>>>>> e13ca1c13c81051d01f75f9ad16d8af1bffb8bc1
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
