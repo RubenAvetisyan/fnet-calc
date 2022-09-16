@@ -1,7 +1,0 @@
-{
-  "name": "family-networf-calculator",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "custom"
-}
