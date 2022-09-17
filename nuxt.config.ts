@@ -29,4 +29,16 @@ export default defineNuxtConfig({
   //     }
   //   },
   // },
+
+  head: {
+    title: 'Netcalc - fNet Telecom',
+    htmlAttrs: {
+      lang: 'hy'
+    },
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' }
+    ],
+  },
 })

@@ -10,9 +10,11 @@ import { add } from 'ionicons/icons'
           <Logos mb-6 />
         </ion-toolbar>
       </ion-header>
-      <main class="text-center h-screen container px-5">
+      <ion-content class="px-10 w-full text-center ion-justify-content-center">
+        <!-- <main class="text-center h-screen container"> -->
         <slot> </slot>
-      </main>
+        <!-- </main> -->
+        </ion-content>
     </ion-page>
     <ion-footer pos="bottom-0 fixed" align="items-center content-center">asd
       <slot name="footer"></slot>

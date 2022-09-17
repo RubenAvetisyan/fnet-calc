@@ -59,28 +59,30 @@ const result = computed(() => {
 </script>
 
 <template>
-  <div class="wrapper bg-white rounded shadow w-screen">
-    <div>{{price}} | {{percent}}% = {{pResult}}</div>
-
-    <ion-item-group>
+  <div class="wrapper bg-white rounded shadow w-full justify-center">
+    <ion-item-group class="content-center ">
       <ion-item-divider>
-        <ion-label>Պայմանագրի Պայմաններ.</ion-label>
+        <ion-label>Ծառայության մատուցման`</ion-label>
       </ion-item-divider>
-      <ion-grid class="px-10">
-        <ion-row>
-          <ion-col>
-            <mobi-select v-model="endDay" :values="billdays" label="endDay"></mobi-select>
-          </ion-col>
-          <ion-col>
-            <my-button id="open-modal">Հաշվարկի սկիզբ</my-button>
+      <ion-grid class="px-2 mx-0">
+        <ion-row class="flex flex-row">
+          <ion-col class="basis-1/2">
+            <my-button id="open-modal" expand="full" justify="center">Հաշվարկի սկիզբ</my-button>
             <ion-modal trigger="open-modal">
               <CalculatorCalendar id="datetime" v-model="dates" />
             </ion-modal>
           </ion-col>
+          <ion-col class="basis-1/4">
+            <mobi-select v-model="endDay" :values="billdays" label="Գանձման օր՝"></mobi-select>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-item-group>
-    {{result.join()}}
-    <div v-for="(date, i) in dates" :key="date">result: {{result[i]}} for {{date}}</div>
+    <List :items="dates.map((date, i)=>`${date}-ի դեպքում՝ ${result[i]}դր.`)">
+      <template #headtext>
+        <span class="text-purple-700 font-bold text-size-1.2rem">Գանձման ենթակա գումար.</span>
+      </template>
+    </List>
+    <!-- <div v-for="(date, i) in dates" :key="date">result: {{result[i]}} for {{date}}</div> -->
   </div>
 </template>
