@@ -7,7 +7,7 @@ const props = defineProps({
   billdays: { type: Array<number>, default: [11, 16, 21], required: true }
 })
 
-const pResult = computed(() => {
+const priceAfterDiscount = computed(() => {
   const price: number = unref(props.price)
   const percent: number = unref(props.percent)
 
@@ -26,12 +26,16 @@ const sd = useBillingDays(props.billdays, unref(startdays))
 const endDay = ref(sd)
 
 const daysDiff = computed(() => {
-  return useGetDifference(unref(startdays), unref(endDay))
+  const starts = dates.value.map(d => useToDate(d))
+  console.log('starts: ', starts);
+  const end = new Date(2022, 8, endDay.value)
+  return useDifferenceInCalendarDays(starts, end)
 })
 
 
 const result = computed(() => {
-  return useGeResultValue(dates, startdays, daysDiff, 10, pResult, 50)
+  console.log('daysDiff: ', unref(daysDiff));
+  return useGeResultValue(dates, startdays, daysDiff, 10, priceAfterDiscount, 50)
 })
 
 const items = computed(() => {
