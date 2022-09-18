@@ -14,9 +14,9 @@ const priceAfterDiscount = computed(() => {
   return price - (price * percent / 100)
 })
 
-const today = ref(new Date())
+const today = useSetFormatForSingleDate(new Date(), 'yyyy-MM-dd')
 
-const dates = ref([useSetFormat(unref(today), 'yyyy-MM-dd')]) as Ref<string[]>
+const dates = ref([today])
 
 const startdays = computed(() => {
   return useDatesStringToNumber(unref(dates))
@@ -27,7 +27,6 @@ const endDay = ref(sd)
 
 const daysDiff = computed(() => {
   const starts = dates.value.map(d => useToDate(d))
-  console.log('starts: ', starts);
   const end = new Date(2022, 8, endDay.value)
   return useDifferenceInCalendarDays(starts, end)
 })

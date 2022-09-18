@@ -18,11 +18,9 @@ export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
 export const useSetFormatForSingleDate: UseSingleSetFormat = (date, dateFormat) => {
   const [d, f] = useBatchUnref(date, dateFormat)
-  if (typeof d === 'string') {
-    return format(parseISO(d), unref(f))
-  }
+  const theDate = typeof d === 'string' ? parseISO(d) : d
 
-  return format(unref(d), unref(f))
+  return format(theDate, f)
 }
 export const useSetFormat:UseSetFormat = (date, dateFormat) => {
   if (Array.isArray(date)) {
