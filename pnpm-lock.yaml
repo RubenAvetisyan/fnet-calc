@@ -30,7 +30,6 @@ dependencies:
   '@capacitor/haptics': 4.0.1_@capacitor+core@4.2.0
   '@capacitor/keyboard': 4.0.1_@capacitor+core@4.2.0
   '@capacitor/status-bar': 4.0.1_@capacitor+core@4.2.0
-  date-fns: 2.29.3
 
 devDependencies:
   '@antfu/eslint-config': 0.26.2_yqf6kl63nyoq5megxukfnom5rm
@@ -42,6 +41,7 @@ devDependencies:
   '@pinia/nuxt': 0.4.1_typescript@4.8.2
   '@unocss/nuxt': 0.45.13
   '@vueuse/nuxt': 9.1.1
+  date-fns: 2.29.3
   eslint: 8.23.0
   nuxt: 3.0.0-rc.8
   nuxt-ionic: 0.7.0
@@ -2687,7 +2687,7 @@ packages:
   /date-fns/2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
-    dev: false
+    dev: true
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

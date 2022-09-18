@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { format, getDate, getDaysInMonth } from 'date-fns'
+import { ComputedRef, Ref } from 'vue';
 
 const props = defineProps({
   price: { type: Number, required: true },
@@ -15,46 +15,28 @@ const pResult = computed(() => {
 })
 
 const today = ref(new Date())
-const datesStringToNumber = (d: string[]) => d.map((date: string) => getDate(new Date(date)))
-const dates = ref([format(today.value, 'yyyy-MM-dd')])
-const startdays = computed(() => {
-  return datesStringToNumber(unref(dates))
-})
 
-const sd = props.billdays.filter((d: number) => startdays.value.some((date: number) => d > date)).sort((a: number, b: number) => b - a)[0]
+const dates = ref([useSetFormat(unref(today), 'yyyy-MM-dd')]) as Ref<string[]>
+
+const startdays = computed(() => {
+  return useDatesStringToNumber(unref(dates))
+}) as ComputedRef<number[]>
+
+const sd = useBillingDays(props.billdays, unref(startdays))
 const endDay = ref(sd)
 
 const daysDiff = computed(() => {
-  const diff = unref(startdays).map((sd: number) => unref(endDay) - sd)
-  console.log('daysDiff: ', diff);
-  return diff
+  return useGetDifference(unref(startdays), unref(endDay))
 })
 
 
 const result = computed(() => {
-  const priceAfterPerscent = unref(pResult)
-  console.log('priceAfterPerscent: ', priceAfterPerscent);
-  const datesOrigin = unref(dates)
-  console.log('datesOrigin: ', datesOrigin);
-  const endDate = unref(endDay)
-  const difference = unref(daysDiff)
-  console.log('difference: ', difference);
-  console.log('endDate: ', endDate);
-  const value = unref(startdays).map((startDate: number, i) => {
-    console.log('startDate: ', startDate);
-    const daysInMonth = getDaysInMonth(new Date(datesOrigin[i]))
-    console.log('daysInMonth: ', daysInMonth);
-    const calculatedPrice = Math.abs(difference[i]) * (priceAfterPerscent / daysInMonth) + priceAfterPerscent
-    console.log('i: ', i);
-    const result = difference[i] <= +10 ? priceAfterPerscent : calculatedPrice
-    console.log('difference[i] <= 10 : ', difference[i] <= 10);
-    const res = useRoundUp(result, 50)
-    console.log('res: ', res);
-    return res
-  })
+  return useGeResultValue(dates, startdays, daysDiff, 10, pResult, 50)
+})
 
-  console.log('value: ', value);
-  return value
+const items = computed(() => {
+  const res = unref(result)
+  return unref(dates).map((date, i) => `${date}-ի դեպքում՝ ${res[i]}դր.`)
 })
 </script>
 
@@ -64,21 +46,19 @@ const result = computed(() => {
       <ion-item-divider>
         <ion-label>Ծառայության մատուցման`</ion-label>
       </ion-item-divider>
-      <ion-grid class="px-2 mx-0">
-        <ion-row class="flex flex-row">
-          <ion-col class="basis-1/2">
-            <my-button id="open-modal" expand="full" justify="center">Հաշվարկի սկիզբ</my-button>
-            <ion-modal trigger="open-modal">
-              <CalculatorCalendar id="datetime" v-model="dates" />
-            </ion-modal>
-          </ion-col>
-          <ion-col class="basis-1/4">
-            <mobi-select v-model="endDay" :values="billdays" label="Գանձման օր՝"></mobi-select>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <grid>
+        <i-col class="basis-1/2">
+          <my-button id="open-modal" expand="full" justify="center">Հաշվարկի սկիզբ</my-button>
+          <ion-modal trigger="open-modal">
+            <CalculatorCalendar id="datetime" v-model="dates" />
+          </ion-modal>
+        </i-col>
+        <i-col class="basis-1/4">
+          <mobi-select v-model="endDay" :values="billdays" label="Գանձման օր՝"></mobi-select>
+        </i-col>
+        </grid>
     </ion-item-group>
-    <List :items="dates.map((date, i)=>`${date}-ի դեպքում՝ ${result[i]}դր.`)">
+    <List :items="items">
       <template #headtext>
         <span class="text-purple-700 font-bold text-size-1.2rem">Գանձման ենթակա գումար.</span>
       </template>

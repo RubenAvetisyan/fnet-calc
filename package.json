@@ -8,9 +8,9 @@
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
-    "generate": "nuxt generate",
-    "ionic:build": "pnpm run generate",
-    "ionic:serve": "pnpm run dev"
+    "generate": "nuxi generate",
+    "ionic:build": "pnpm run build && pnpm run generate",
+    "ionic:serve": "pnpm run start"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.2",
@@ -22,6 +22,7 @@
     "@pinia/nuxt": "^0.4.1",
     "@unocss/nuxt": "^0.45.13",
     "@vueuse/nuxt": "^9.1.1",
+    "date-fns": "^2.29.3",
     "eslint": "^8.23.0",
     "nuxt": "^3.0.0-rc.8",
     "nuxt-ionic": "^0.7.0",
@@ -34,7 +35,6 @@
     "@capacitor/core": "4.2.0",
     "@capacitor/haptics": "4.0.1",
     "@capacitor/keyboard": "4.0.1",
-    "@capacitor/status-bar": "4.0.1",
-    "date-fns": "^2.29.3"
+    "@capacitor/status-bar": "4.0.1"
   }
 }
