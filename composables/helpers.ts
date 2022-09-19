@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { format, getDate, getDaysInMonth, differenceInCalendarDays, differenceInDays, parseISO, toDate } from 'date-fns'
+import { format, getDate, getDaysInMonth, differenceInCalendarDays, differenceInDays, parseISO, toDate, addDays, setDate, formatISO } from 'date-fns'
 
 type Prop<T> = T | Ref<T>
 
@@ -16,6 +16,24 @@ export const useToDate = (date: Prop<string | number | Date>) => {
   if (theDate instanceof Date) return theDate
   
   return typeof theDate === 'string' ? parseISO(theDate) : toDate(theDate)
+}
+
+export const useFormatISO = (
+  date: Prop<Date | number>,
+  options?: {
+    format?: 'extended' | 'basic';
+    representation?: 'complete' | 'date' | 'time';
+  }
+) => {
+  return formatISO(unref(date), options)
+}
+
+export const useAddDays = (date: Prop<Date | number>, amount: number) => {
+  return addDays(unref(date), amount)
+}
+
+export const useSetDate = (date: Prop<Date | number>, dayOfMonth: number) => {
+  return setDate(unref(date), dayOfMonth)
 }
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 

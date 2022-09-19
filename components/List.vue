@@ -13,11 +13,11 @@ defineProps({
   </ion-list>
 
   <slot v-for="(item, index) in items">
-    <ion-item class="text-center">
+    <ion-item color="medium">
       <!-- <ion-avatar slot="start">
       <img src="./avatar-finn.png" />
     </ion-avatar> -->
-      <ion-label> {{item}} </ion-label>
+      <ion-label class="ion-text-wrap ion-text-start"> <span class="text-size-1rem">{{item}}</span> </ion-label>
     </ion-item>
   </slot>
 </template>

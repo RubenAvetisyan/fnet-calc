@@ -1,5 +1,5 @@
 <template>
-  <ion-grid class="px-2 mx-0">
+  <ion-grid>
     <slot />
   </ion-grid>
 </template>

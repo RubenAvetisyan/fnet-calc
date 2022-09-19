@@ -19,14 +19,14 @@ const priceAfterDiscount = computed(() => {
 
 <template>
   <NuxtLayout name="home">
-    <Suspense>
-      <!-- <PageView /> -->
+    <!-- <Suspense>
+                                      <PageView />
       <template #fallback>
         <div op50 italic>
           <span animate-pulse>Loading...</span>
         </div>
       </template>
-    </Suspense>
+    </Suspense> -->
     <grid>
       <row class="ion-align-items-center">
         <i-col class="ion-align-self-start">
@@ -54,8 +54,7 @@ const priceAfterDiscount = computed(() => {
       </row>
     </grid>
 
-    <CalculatorView class="w-full grid grid-cols-1 mt-2 rounded-md border overflow-hidden flex-1 bg-purple-200"
-      :price="price" :percent="percent" :price-after-discount="priceAfterDiscount" :billdays="billdays" />
+    <CalculatorView :price="price" :percent="percent" :price-after-discount="priceAfterDiscount" :billdays="billdays" />
 
     <!-- <template #footer></template> -->
 
