@@ -27,23 +27,27 @@ const priceAfterDiscount = computed(() => {
         </div>
       </template>
     </Suspense>
-    <grid class="justify-between">
-      <row>
-        <i-col class="ion-align-self-start mx-auto">
-          <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Սակագին
+    <grid>
+      <row class="ion-align-items-center">
+        <i-col class="ion-align-self-start">
+          <ion-label color="primary" position="floating align-bottom" class="font-bold text-size-1rem">Սակագին
           </ion-label>
           <InputEntry class="max-w-md" v-model="price" />
         </i-col>
         <i-col class="ion-align-self-center max-w-sm">
-          <ion-label position="fixed" class="text-purple-700 font-bold text-size-1rem">Զեղչ %`</ion-label>
+          <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Զեղչ %`</ion-label>
           <InputEntry class="w-25" v-model="percent" :max="100" :max-length="3" />
         </i-col>
-        <i-col size="auto" class="ion-align-self-end">
-          <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Գումար
+        <i-col class="ion-align-self-end">
+          <ion-label color="primary" position="floating align-bottom" class="font-bold text-size-1rem">Գումար
           </ion-label>
           <grid>
             <row>
-              <i-col class="font-bold">{{priceAfterDiscount}}</i-col>
+              <i-col color="primary" class="font-bold">
+                <ion-label color="medium" class="font-bold text-size-1rem">
+                  {{priceAfterDiscount}}
+                </ion-label>
+              </i-col>
             </row>
           </grid>
         </i-col>
@@ -52,6 +56,8 @@ const priceAfterDiscount = computed(() => {
 
     <CalculatorView class="w-full grid grid-cols-1 mt-2 rounded-md border overflow-hidden flex-1 bg-purple-200"
       :price="price" :percent="percent" :price-after-discount="priceAfterDiscount" :billdays="billdays" />
+
+    <!-- <template #footer></template> -->
 
   </NuxtLayout>
 </template>

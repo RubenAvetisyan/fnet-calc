@@ -1,7 +1,3 @@
-<script setup>
-import { add } from 'ionicons/icons'
-</script>
-
 <template>
   <ion-app align="content-center">
     <ion-page class="ion-padding-start">
@@ -16,15 +12,10 @@ import { add } from 'ionicons/icons'
         <slot> </slot>
         <!-- </main> -->
       </ion-content>
-      
-      <ion-footer pos="bottom-0 fixed" align="items-center content-center" class="mt-5">asd
+      <ion-footer color="medium" pos="bottom-0 fixed" align="items-center content-center" class="mt-5">
         <slot name="footer"></slot>
       </ion-footer>
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
-          <ion-icon :icon="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+      <FabButton />
     </ion-page>
   </ion-app>
 </template>

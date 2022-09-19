@@ -41,4 +41,6 @@ export default defineNuxtConfig({
       { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' }
     ],
   },
+
+  css: ['~/assets/core.css']
 })
