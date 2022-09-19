@@ -11,8 +11,11 @@ type Format = Prop<string>
 type UseSetFormat = (date: Dates, dateFormat: Format) => string[] | string
 type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFormat: Format) => string
 
-export const useToDate = (date: string | number) => {
-  return typeof date === 'string' ? parseISO(date) : toDate(date)
+export const useToDate = (date: Prop<string | number | Date>) => {
+  const theDate = unref(date)
+  if (theDate instanceof Date) return theDate
+  
+  return typeof theDate === 'string' ? parseISO(theDate) : toDate(theDate)
 }
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
@@ -49,6 +52,18 @@ export const useBillingDays = (billdays: number[], startdays: number[]) => {
     .sort((a: number, b: number) => b - a)[0]
 }
 
+export const useBillingDay = (billdays: number[], startdays: number) => {
+  return billdays.filter((billday: number) => startdays > billday)
+    .sort((a: number, b: number) => b - a)[0]
+}
+
+export const useDifferenceInCalendarDay = (start: Prop<string | number | Date>, end: Prop<number | Date>) => { 
+  let startDays = useToDate(start)
+
+  const endDay = unref(end)
+  return Math.abs(differenceInCalendarDays(endDay, startDays))
+}
+
 export const useDifferenceInCalendarDays = (start: Prop<number[] | Date[]>, end: Prop<number | Date>) => { 
   const startDays = unref(start)
   const endDay = unref(end)
@@ -74,6 +89,19 @@ export const usePricCalc = (
 }
 
 export const useGeResultValue = (
+  dates: Prop<string | Date>,
+  difference: Prop<number>,
+  maxRange: Prop<number>,
+  priceAfterPerscent: Prop<number>,
+  round: Prop<number>
+) => {
+  const daysInMonth = useGetDaysInMonth(unref(dates))
+  const calculatedPrice = usePricCalc(unref(difference), unref(maxRange), priceAfterPerscent, daysInMonth)
+
+  return useRoundUp(calculatedPrice, unref(round))
+}
+
+export const useGeResultValues = (
   dates: string[] | Date[] | Ref<string[] | Date[]>,
   startdays: number[] | Ref<number[]>,
   difference: number[] | Ref<number[]>,

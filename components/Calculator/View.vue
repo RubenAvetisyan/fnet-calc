@@ -10,30 +10,29 @@ const props = defineProps({
 
 const today = useSetFormatForSingleDate(new Date(), 'yyyy-MM-dd')
 
-const dates = ref([today])
+const dates = ref(today)
 
 const startdays = computed(() => {
   return useDatesStringToNumber(unref(dates))
-}) as ComputedRef<number[]>
+}) as ComputedRef<number>
 
-const sd = useBillingDays(props.billdays, unref(startdays))
+const sd = useBillingDay(props.billdays, unref(startdays))
 const endDay = ref(sd)
 
 const daysDiff = computed(() => {
-  const starts = dates.value.map(d => useToDate(d))
+  const starts = dates.value //.map(d => useToDate(d))
   const end = new Date(2022, 8, endDay.value)
-  return useDifferenceInCalendarDays(starts, end)
+  return useDifferenceInCalendarDay(starts, end)
 })
 
 
 const result = computed(() => {
   console.log('daysDiff: ', unref(daysDiff));
-  return useGeResultValue(dates, startdays, daysDiff, 10, props.priceAfterDiscount, 50)
+  return useGeResultValue(dates, daysDiff, 10, props.priceAfterDiscount, 50)
 })
 
 const items = computed(() => {
-  const res = unref(result)
-  return unref(dates).map((date, i) => `${date}-ի դեպքում՝ ${res[i]}դր.`)
+  return `${unref(dates)}-ի դեպքում՝ ${unref(result)}դր.`
 })
 </script>
 
@@ -54,7 +53,7 @@ const items = computed(() => {
             </row>
             </grid>
             </ion-item-group>
-            <List :items="items">
+            <List :items="[items]">
               <template #headtext>
                 <span class="text-purple-700 font-bold text-size-1.2rem">Գանձման ենթակա գումար.</span>
               </template>
