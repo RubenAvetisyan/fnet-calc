@@ -27,25 +27,27 @@ const priceAfterDiscount = computed(() => {
         </div>
       </template>
     </Suspense>
-    <grid class="flex justify-between  mx-auto px-5">
-      <i-col size="4" class="basis-1/2 mx-auto max-w-md">
-        <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Սակագնային
-        </ion-label>
-        <InputEntry class="max-w-md" v-model="price" />
-      </i-col>
-      <i-col size="3" class="basis-1/2 max-w-sm mx-auto">
-        <ion-label position="fixed" class="text-purple-700 font-bold text-size-1rem">Զեղչ %`</ion-label>
-        <InputEntry class="w-25" v-model="percent" :max="100" :max-length="3" />
-      </i-col>
-      <i-col size="3">
-        <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Գումար
-        </ion-label>
-        <grid>
-          <row>
-            <i-col class="font-bold">{{priceAfterDiscount}}</i-col>
-          </row>
-        </grid>
-      </i-col>
+    <grid class="justify-between">
+      <row>
+        <i-col class="ion-align-self-start mx-auto">
+          <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Սակագին
+          </ion-label>
+          <InputEntry class="max-w-md" v-model="price" />
+        </i-col>
+        <i-col class="ion-align-self-center max-w-sm">
+          <ion-label position="fixed" class="text-purple-700 font-bold text-size-1rem">Զեղչ %`</ion-label>
+          <InputEntry class="w-25" v-model="percent" :max="100" :max-length="3" />
+        </i-col>
+        <i-col size="auto" class="ion-align-self-end">
+          <ion-label position="floating align-bottom" class="text-purple-700 font-bold text-size-1rem">Գումար
+          </ion-label>
+          <grid>
+            <row>
+              <i-col class="font-bold">{{priceAfterDiscount}}</i-col>
+            </row>
+          </grid>
+        </i-col>
+      </row>
     </grid>
 
     <CalculatorView class="w-full grid grid-cols-1 mt-2 rounded-md border overflow-hidden flex-1 bg-purple-200"
