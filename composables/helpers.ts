@@ -65,21 +65,21 @@ export const useGetDaysInMonth = (fullDate: string | Date) => {
 }
 
 export const usePricCalc = (
-  diff: number | Ref<number>,
-  lesThen: number | Ref<number>,
-  priceAfterPerscent: number | Ref<number>,
-  daysInMonth: number | Ref<number>
+  diff: Prop<number>,
+  lesThen: Prop<number>,
+  priceAfterPerscent: Prop<number>,
+  daysInMonth: Prop<number>
 ) => {
-  return unref(diff) <= unref(lesThen) ? unref(priceAfterPerscent) : Math.abs(unref(diff)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
+  return unref(diff) >= unref(lesThen) ? unref(priceAfterPerscent) : Math.abs(unref(diff)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
 }
 
 export const useGeResultValue = (
   dates: string[] | Date[] | Ref<string[] | Date[]>,
   startdays: number[] | Ref<number[]>,
   difference: number[] | Ref<number[]>,
-  maxRange: number | Ref<number>,
-  priceAfterPerscent: number | Ref<number>,
-  round: number | Ref<number>
+  maxRange: Prop<number>,
+  priceAfterPerscent: Prop<number>,
+  round: Prop<number>
 ) => {
   const daysInMonth = unref(dates).map(d => useGetDaysInMonth(d))
   const diff = unref(difference)

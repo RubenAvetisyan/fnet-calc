@@ -38,7 +38,7 @@ const placeholder = ref('')
 
 <template><!-- @keydown.enter="go" -->
 <ion-input id="input" type="number" v-model="modelValue" :value="defaultValue || num" :placeholder="placeholder"
-  autocomplete="off" p="x-4 y-2" m="t-5 x-1" text="center" bg="transparent" border="~ rounded gray-200 dark:gray-700"
+  autocomplete="off" p="x-4 y-2" m="t-1 x-1" text="center" bg="transparent" border="~ rounded gray-200 dark:gray-700"
   outline="none active:none" :max="max" :maxlength="maxLength"
   @input="(event: any) => $emit('update:modelValue', +event.target.value)"
   ></ion-input>

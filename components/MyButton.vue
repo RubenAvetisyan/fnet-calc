@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <ion-button color="primary" @click="fn">
+    <ion-button color="tertiary" :fill="'outline'" class="text-purple-700" @click="fn">
         <slot />
     </ion-button>
 </template>

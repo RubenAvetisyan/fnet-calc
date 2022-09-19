@@ -4,14 +4,8 @@ import { ComputedRef, Ref } from 'vue';
 const props = defineProps({
   price: { type: Number, required: true },
   percent: { type: Number, required: true },
+  priceAfterDiscount: { type: Number, required: true },
   billdays: { type: Array<number>, default: [11, 16, 21], required: true }
-})
-
-const priceAfterDiscount = computed(() => {
-  const price: number = unref(props.price)
-  const percent: number = unref(props.percent)
-
-  return price - (price * percent / 100)
 })
 
 const today = useSetFormatForSingleDate(new Date(), 'yyyy-MM-dd')
@@ -34,7 +28,7 @@ const daysDiff = computed(() => {
 
 const result = computed(() => {
   console.log('daysDiff: ', unref(daysDiff));
-  return useGeResultValue(dates, startdays, daysDiff, 10, priceAfterDiscount, 50)
+  return useGeResultValue(dates, startdays, daysDiff, 10, props.priceAfterDiscount, 50)
 })
 
 const items = computed(() => {
@@ -47,25 +41,27 @@ const items = computed(() => {
   <div class="wrapper bg-white rounded shadow w-full justify-center">
     <ion-item-group class="content-center ">
       <ion-item-divider>
-        <ion-label>Ծառայության մատուցման`</ion-label>
+        <ion-label class="text-purple-700 text-size-1rem">Ծառայության մատուցման`</ion-label>
       </ion-item-divider>
       <grid>
-        <i-col class="basis-1/2">
-          <my-button id="open-modal" expand="full" justify="center">Հաշվարկի սկիզբ</my-button>
-          <ion-modal trigger="open-modal">
-            <CalculatorCalendar id="datetime" v-model="dates" />
-          </ion-modal>
-        </i-col>
-        <i-col class="basis-1/4">
-          <mobi-select v-model="endDay" :values="billdays" label="Գանձման օր՝"></mobi-select>
-        </i-col>
-        </grid>
-    </ion-item-group>
-    <List :items="items">
-      <template #headtext>
-        <span class="text-purple-700 font-bold text-size-1.2rem">Գանձման ենթակա գումար.</span>
-      </template>
-    </List>
+        <row>
+          <i-col class="basis-1/2">
+            <my-button id="open-modal" expand="block" justify="center">Հաշվարկի սկիզբ</my-button>
+            </i-col>
+            <i-col class="basis-1/4">
+              <mobi-select v-model="endDay" :values="billdays" label="Գանձման օր՝"></mobi-select>
+            </i-col>
+            </row>
+            </grid>
+            </ion-item-group>
+            <List :items="items">
+              <template #headtext>
+                <span class="text-purple-700 font-bold text-size-1.2rem">Գանձման ենթակա գումար.</span>
+              </template>
+            </List>
+            <ion-modal trigger="open-modal">
+              <CalculatorCalendar id="datetime" v-model="dates" />
+            </ion-modal>
     <!-- <div v-for="(date, i) in dates" :key="date">result: {{result[i]}} for {{date}}</div> -->
   </div>
 </template>
