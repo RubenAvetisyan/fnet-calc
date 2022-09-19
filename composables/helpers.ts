@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { format, getDate, getDaysInMonth, differenceInCalendarDays, differenceInDays, parseISO, toDate, addDays, setDate, formatISO } from 'date-fns'
+import { format, getDate, getDaysInMonth, differenceInCalendarDays, differenceInDays, parseISO, toDate, addDays, setDate, formatISO, addMonths } from 'date-fns'
 
 type Prop<T> = T | Ref<T>
 
@@ -35,6 +35,10 @@ export const useAddDays = (date: Prop<Date | number>, amount: number) => {
 export const useSetDate = (date: Prop<Date | number>, dayOfMonth: number) => {
   return setDate(unref(date), dayOfMonth)
 }
+
+export const useAddMonths = (date: Prop<Date | number>, amount: number) => {
+  return addMonths(unref(date), amount)
+}
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
 export const useSetFormatForSingleDate: UseSingleSetFormat = (date, dateFormat) => {
@@ -56,6 +60,10 @@ export const useRoundUp = <T extends Prop<number>>(num: T, precision: T) => {
   return Math.ceil(a / b) * b
 }
 
+export const useGetDate = (date: Prop<Date | number>) => {
+  return getDate(unref(date))
+}
+
 export const useDatesStringToNumber = (d: Strings) => {
   const date = unref(d)
   if (Array.isArray(date)) {
@@ -70,15 +78,15 @@ export const useBillingDays = (billdays: number[], startdays: number[]) => {
     .sort((a: number, b: number) => b - a)[0]
 }
 
-export const useBillingDay = (billdays: number[], startdays: number) => {
-  return billdays.filter((billday: number) => startdays > billday)
+export const useBillingDay = (billdays: number[], startday: number) => {
+  return billdays.filter((billday: number) => startday < billday)
     .sort((a: number, b: number) => b - a)[0]
 }
 
 export const useDifferenceInCalendarDay = (start: Prop<string | number | Date>, end: Prop<number | Date>) => { 
-  let startDays = useToDate(start)
-
+  const startDays = useToDate(start)
   const endDay = unref(end)
+
   return Math.abs(differenceInCalendarDays(endDay, startDays))
 }
 

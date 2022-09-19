@@ -1,28 +1,43 @@
 <template>
-  <ion-datetime id="datetime" ref="datetime" size="cover" locale="hy" :presentation="!dateAndTime ? 'date-time' : 'date'"
-    :first-day-of-week="1" :multiple="false" :value="modelValue" :show-default-buttons="true" done-text="Հաստատել"
+  <ion-datetime :id="id" ref="datetime" size="cover" locale="hy" :presentation="dateAndTime ? 'date-time' : 'date'"
+    :first-day-of-week="1" :multiple="multiple" :value="modelValue" :show-default-buttons="true" done-text="Հաստատել"
     cancel-text="Թողնել նույնը"
     :min="min"
+    :dayValues="dayValues"
+    :is-date-enabled="isDateEabled"
+    :title="title"
     @ionChange="(event: any) => $emit('update:modelValue', event.detail.value)">
-    <span slot="title">Նշել միացման օրվա ամսաթիվը</span>
+    <span v-if="title" slot="title">{{title}}</span>
   </ion-datetime>
 </template>
 
 <script setup lang="ts">
 const props = defineProps({
+  id: { type: String, default: '' },
+  title: {
+    type: String,
+    default: ''
+  },
+  multiple: {
+    type: Boolean,
+    default: false
+  },
   modelValue: {
-    type: Array<number>,
+    type: String,
     // default: () => ([])
   },
-  id: { type: String, default: '' },
-  dateAndTime: { type: Boolean, default: () => true },
+  dateAndTime: { type: Boolean, default: false },
   min: {
     type: String,
     default: undefined
-  }
+  },
+  dayValues: {
+    type: String,
+    default: undefined
+  },
+  isDateEabled: Function,
+  default: () => true
 })
 
 const datetime = ref()
-
-const confirm = () => datetime.value.$el.confirm()
 </script>
