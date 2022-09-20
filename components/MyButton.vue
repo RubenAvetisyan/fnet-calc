@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { calendar } from 'ionicons/icons';
 
 const props = defineProps({
     fn: {
@@ -9,7 +10,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <ion-button color="Primary" :fill="'outline'" @click="fn">
+    <ion-button @click="fn">
+        <ion-icon slot="start" :icon="calendar"></ion-icon>
         <slot />
     </ion-button>
 </template>

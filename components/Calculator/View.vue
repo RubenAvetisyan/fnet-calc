@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ComputedRef, Ref } from 'vue';
 import { differenceInCalendarDays, isSameDay } from 'date-fns'
+import { Ref } from 'vue';
 
 const props = defineProps({
   price: { type: Number, required: true },
@@ -9,7 +9,9 @@ const props = defineProps({
   billdays: { type: Array<number>, default: [11, 16, 21], required: true }
 })
 
-const today = useSetFormatForSingleDate(new Date(), 'yyyy-MM-dd')
+const FORMAT = 'yyyy-MM-dd'
+
+const today = useSetFormatForSingleDate(new Date(), FORMAT)
 
 const startday = ref(today)
 
@@ -17,22 +19,17 @@ const calendarMin = computed(() => {
   return useFormatISO(useSetDate(useToDate(startday), 1))
 })
 
-const miacmanOr = computed(() => useSetFormatForSingleDate(startday, 'dd-MM-yyyy'))
+const miacmanOr = computed(() => useSetFormatForSingleDate(startday, FORMAT))
 const anjatmanOr = computed(() => {
+  const mo = miacmanOr
   return props.billdays.map(billday => {
-    const start = useDatesStringToNumber(miacmanOr) as number
+    const start = useDatesStringToNumber(mo) as number
     const sub = billday - start
     const startAsDate = useToDate(startday)
     const nextMonth = useAddMonths(startAsDate, 1)
     console.log('nextMonth: ', nextMonth);
     return sub < 0 ? useSetDate(nextMonth, billday) : useSetDate(startAsDate, billday)
   })
-})
-
-const orer = computed(() => {
-  const result = unref(anjatmanOr).map((day) => useGetDate(day)).join()
-  console.log('result: ', result);
-  return result
 })
 
 
@@ -44,59 +41,52 @@ const filteredDays = computed(() => {
     const res = diff > 0
     console.log('res: ', res);
     return res
-  })
+  }).sort((a, b) => differenceInCalendarDays(a, b))
 })
 
-const end = useSetFormatForSingleDate(useToDate(Date.now()), 'd-MM -yyyy')
-const endDay = ref(end)
+console.log('unref(filteredDays): ', unref(filteredDays));
+const end = unref(filteredDays)[0]
+const endDay = ref(useSetFormatForSingleDate(end, FORMAT))
 
+const activeDays = computed(() => {
+  return differenceInCalendarDays(useToDate(endDay), useToDate(startday))
+})
 
 const isDateEabled = (dateString: string) => {
-  const isDate = unref(filteredDays).some(day => isSameDay(day, useToDate(dateString)))
-  console.log('isDate: ', isDate);
+  const isDate = unref(filteredDays).some(day => {
+    const end = useToDate(dateString)
+    return isSameDay(day, end)
+  })
   return isDate
 }
 
-const calendarData: Ref<any> = ref({
-  model: undefined,
-  title: '',
-  isDateEabled,
-  min: undefined
+
+const result = computed(() => {
+
+  return useGeResultValue(miacmanOr, activeDays, 10, props.priceAfterDiscount, 50)
 })
-const setCalendarId = (name: string) => {
-  const title = name === 'selectdate' ? 'Նշել անջատման օրվա ամսաթիվը' : 'Նշել միացման օրվա ամսաթիվը'
-  const min = name === 'datetime' ? calendarMin.value : undefined
-  const model = name === 'datetime' ? startday : endDay
-  calendarData.value = {
-    model,
-    title,
-    isDateEabled,
-    min
+
+const items = computed(() => {
+  return [`Միացման օր՝ ${unref(miacmanOr)}`,
+  `Անջատման օր՝ ${unref(endDay)}`,
+  `Վճարման ենթակա գումար՝ ${unref(result)}դր.`
+  ]
+})
+
+const isEndDate = ref(false)
+const isStartDate = ref(false)
+
+const endDateCalendar = ref<HTMLInputElement | null>(null)
+
+const onClock = (v: string) => () => {
+  if (v === 'endDate') {
+    isEndDate.value = !isEndDate.value
   }
-  console.log('calendarData: ', calendarData.value);
+
+  if (v === 'startDate') {
+    isEndDate.value = !isEndDate.value
+  }
 }
-// const daysDiff = computed(() => {
-//   const starts = dates.value //.map(d => useToDate(d))
-//   const end = new Date(2022, 8, endDay.value)
-//   return useDifferenceInCalendarDay(starts, end)
-// })
-
-
-// const result = computed(() => {
-//
-//   return useGeResultValue(dates, daysDiff, 10, props.priceAfterDiscount, 50)
-// })
-
-// const miacmanOr = computed(() => useSetFormatForSingleDate(dates, 'dd/MM/yyyy'))
-// const unjatmanOr = computed(() => useSetFormatForSingleDate(useSetDate(useAddDays(useToDate(dates), 30), unref(endDay)), 'dd/MM/yyyy'))
-
-//
-
-// const items = computed(() => {
-//   return [`Միացման օր՝ ${unref(miacmanOr)}`,
-//   `անջատման օր՝ ${unref(unjatmanOr)}`,
-//   `Վճարման ենթակա գումար՝ ${unref(result)}դր.`]
-// })
 </script>
 
 <template><ion-card>
@@ -107,27 +97,43 @@ const setCalendarId = (name: string) => {
   <ion-label color="secondary"><span class="text-size-1rem"></span></ion-label>
   <grid>
     <row class="ion-align-items-center">
-      <i-col class="basis-1/4 bg-gr">
+      <i-col>
         <!-- <mobi-select v-model="endDay" :values="orer" label="Անջատման օր՝"></mobi-select> -->
-        <my-button id="open-modal" expand="block" justify="center" @click="setCalendarId('selectdate')">Անջատման օր
-          {{endDay}}</my-button>
+        <my-button id="open-end-modal" expand="block" color="primary" fill="solid" justify="center" :fn="onClock('endDate')">
+          Անջատման օր` {{endDay}}
+        </my-button>
         </i-col>
-        <i-col class="basis-1/2">
-          <my-button id="open-modal" expand="block" justify="center" @click="setCalendarId('datetime')">Միացման օր
-            {{miacmanOr}}</my-button>
+        <i-col>
+          <my-button id="open-start-modal" expand="block" color="primary" fill="outline" justify="center"
+            :fn="onClock('startDate')">
+            Միացման օր` {{miacmanOr}}</my-button>
         </i-col>
         </row>
+        <row>
+          <ion-label color="warning"><span class="text-size-0.8rem">ակտիվ օրերի քանակ՝ {{ activeDays }}</span></ion-label>
+        </row>
         </grid>
-        <!-- <List :items="items
-                                                                                                                                                                                                                                                                                                                                  ">
-                                                                                                                                                                                                                                                                                                                                    <template #headtext>
-                                                                                                                                                                                                                                                                                                                                      <span class="text-purple-700 font-bold text-size-1rem">Գանձման ենթակա գումար.</span>
-                                                                                                                                                                                                                                                                                                                                    </template>
-                                                                                                                                                                                                                                                                                                                                  </List> -->
-        <ion-modal trigger="open-modal">
-          <CalculatorCalendar id="datetime" v-model="calendarData.model" :is-date-eabled="calendarData.isDateEabled"
-            :min="calendarData.min" :title="calendarData.title" />
-  </ion-modal>
-    <!-- <div v-for="(date, i) in dates" :key="date">result: {{result[i]}} for {{date}}</div> -->
+        <List :items="items">
+          <template #headtext>
+            <span class="text-purple-700 font-bold text-size-1rem">Գանձման ենթակա գումար.</span>
+          </template>
+        </List>
+        <ion-modal :is-open="isEndDate">
+          <ion-content class="ion-padding">
+            <ion-item>
+              <CalculatorCalendar ref="endDateCalendar" id="endDate" v-model="endDay" :is-date-eabled="isDateEabled"
+                title="Նշել անջատման օրվա ամսաթիվը" />
+            </ion-item>
+          </ion-content>
+        
+        </ion-modal>
+        <ion-modal :is-open="isStartDate">
+          <ion-content class="ion-padding">
+            <ion-item>
+              <CalculatorCalendar ref="startDate" id="startDate" v-model="startday" :min="calendarMin"
+                title="Նշել միացման օրվա ամսաթիվը" />
+            </ion-item>
+          </ion-content>
+        </ion-modal>
   </ion-card>
 </template>

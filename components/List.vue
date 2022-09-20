@@ -17,7 +17,7 @@ defineProps({
       <!-- <ion-avatar slot="start">
       <img src="./avatar-finn.png" />
     </ion-avatar> -->
-      <ion-label class="ion-text-wrap ion-text-start"> <span class="text-size-1rem">{{item}}</span> </ion-label>
+      <ion-label class="ion-text-wrap ion-text-start"> <span class="text-size-1.3rem">{{item}}</span> </ion-label>
     </ion-item>
   </slot>
 </template>

@@ -14,8 +14,16 @@ type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFo
 export const useToDate = (date: Prop<string | number | Date>) => {
   const theDate = unref(date)
   if (theDate instanceof Date) return theDate
+
+  if (typeof theDate === 'string') {
+    return parseISO(theDate)
+  }
+
+  if (typeof theDate === 'number') {
+    return toDate(theDate)
+  }
   
-  return typeof theDate === 'string' ? parseISO(theDate) : toDate(theDate)
+  return  theDate
 }
 
 export const useFormatISO = (
@@ -41,11 +49,14 @@ export const useAddMonths = (date: Prop<Date | number>, amount: number) => {
 }
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
-export const useSetFormatForSingleDate: UseSingleSetFormat = (date, dateFormat) => {
+export const useSetFormatForSingleDate = (date: Prop<string | number | Date>, dateFormat: Prop<String>) => {
   const [d, f] = useBatchUnref(date, dateFormat)
-  const theDate = typeof d === 'string' ? parseISO(d) : d
 
-  return format(theDate, f)
+  if (typeof d === 'string') {
+    return format(useToDate(parseISO(d)), f)
+  }
+
+  return format(d, f)
 }
 export const useSetFormat:UseSetFormat = (date, dateFormat) => {
   if (Array.isArray(date)) {
