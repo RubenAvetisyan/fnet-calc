@@ -35,21 +35,12 @@ const priceAfterDiscount = computed(() => {
           <InputEntry class="max-w-md" v-model="price" />
         </i-col>
         <i-col class="ion-align-self-center max-w-sm">
-          <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Զեղչ %`</ion-label>
+          <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Զեղչ %</ion-label>
           <InputEntry class="w-25" v-model="percent" :max="100" :max-length="3" />
         </i-col>
         <i-col class="ion-align-self-end">
-          <ion-label color="primary" position="floating align-bottom" class="font-bold text-size-1rem">Գումար
-          </ion-label>
-          <grid>
-            <row>
-              <i-col color="primary" class="font-bold">
-                <ion-label color="medium" class="font-bold text-size-1rem">
-                  {{priceAfterDiscount}}
-                </ion-label>
-              </i-col>
-            </row>
-          </grid>
+          <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Գումար</ion-label>
+          <InputEntry class="w-25 font-bold" :value="priceAfterDiscount" readonly />
         </i-col>
       </row>
     </grid>

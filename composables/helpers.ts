@@ -5,7 +5,7 @@ type Prop<T> = T | Ref<T>
 
 type DateString = Prop<Date | string>
 type Strings = Prop<string | string[]>
-type Dates = Prop<string | Date | string[] | Date[]>
+type Dates = Prop<string | Date | number | string[] | Date[] | number[]>
 type Format = Prop<string>
 
 type UseSetFormat = (date: Dates, dateFormat: Format) => string[] | string
@@ -27,25 +27,25 @@ export const useToDate = (date: Prop<string | number | Date>) => {
 }
 
 export const useFormatISO = (
-  date: Prop<Date | number>,
+  date: Prop<Date | number | string>,
   options?: {
     format?: 'extended' | 'basic';
     representation?: 'complete' | 'date' | 'time';
   }
-) => {
-  return formatISO(unref(date), options)
+): string => {
+  return callback({ date, options: [options] }, formatISO)
 }
 
-export const useAddDays = (date: Prop<Date | number>, amount: number) => {
-  return addDays(unref(date), amount)
+export const useAddDays = (date: Prop<Date | number | string>, amount: number): Date => {
+  return callback({ date, options: [amount] }, addDays)
 }
 
-export const useSetDate = (date: Prop<Date | number>, dayOfMonth: number) => {
-  return setDate(unref(date), dayOfMonth)
+export const useSetDate = (date: Prop<Date | number | string>, dayOfMonth: number):Date => {
+  return callback({ date, options: [dayOfMonth] }, setDate)
 }
 
-export const useAddMonths = (date: Prop<Date | number>, amount: number) => {
-  return addMonths(unref(date), amount)
+export const useAddMonths = (date: Prop<Date | number | string>, amount: number) => {
+  return callback({ date, options: [amount] }, addMonths)
 }
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
@@ -58,17 +58,13 @@ export const useSetFormatForSingleDate = (date: Prop<string | number | Date>, da
 
   return format(d, f)
 }
-export const useSetFormat:UseSetFormat = (date, dateFormat) => {
+export const useSetFormat: UseSetFormat = (date, dateFormat) => {
+  const cb = (d: any, f: any)=>callback({ date:d, options: [f] }, useSetFormatForSingleDate)
   if (Array.isArray(date)) {
-    return date.map((d=>useSetFormatForSingleDate(d, dateFormat)))
+    return date.map((d=>cb(d, dateFormat)))
   }
 
-  return useSetFormatForSingleDate(date, dateFormat)
-}
-
-export const useRoundUp = <T extends Prop<number>>(num: T, precision: T) => {
-  const [a,b] = useBatchUnref(num, precision)
-  return Math.ceil(a / b) * b
+  return cb(date, dateFormat)
 }
 
 export const useGetDate = (date: Prop<Date | number>) => {
@@ -117,23 +113,37 @@ export const useGetDaysInMonth = (fullDate: string | Date) => {
 }
 
 export const usePricCalc = (
-  diff: Prop<number>,
+  difference: Prop<number>,
   lesThen: Prop<number>,
   priceAfterPerscent: Prop<number>,
   daysInMonth: Prop<number>
 ) => {
-  return unref(diff) >= unref(lesThen) ? unref(priceAfterPerscent) : Math.abs(unref(diff)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
+  return unref(difference) <= unref(lesThen)
+    ? Math.abs(unref(difference)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
+    : unref(priceAfterPerscent)
+}
+
+export const useRoundUp = <T extends Prop<number>>(num: T, precision: T) => {
+  const [a, b] = useBatchUnref(num, precision)
+  const sf = `${a}`.substr(-2)
+  const simpleRound = `${a}`.substring(0, `${a}`.length - 2) + b
+
+  return +sf < b && +sf !== 0 ? simpleRound : Math.ceil(a / b) * b
 }
 
 export const useGeResultValue = (
-  dates: Prop<string | Date>,
-  difference: Prop<number>,
+  startDate: Prop<Date>,
+  endDate: Prop<Date>,
   maxRange: Prop<number>,
   priceAfterPerscent: Prop<number>,
   round: Prop<number>
 ) => {
-  const daysInMonth = useGetDaysInMonth(unref(dates))
-  const calculatedPrice = usePricCalc(unref(difference), unref(maxRange), priceAfterPerscent, daysInMonth)
+  const daysinmonth = getDaysInMonth(useToDate(startDate))
+  console.log('daysinmonth: ', daysinmonth);
+  const difference = differenceInCalendarDays(unref(startDate), unref(endDate))
+  console.log('difference: ', difference);
+  const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)
+  console.log('calculatedPrice: ', calculatedPrice);
 
   return useRoundUp(calculatedPrice, unref(round))
 }
@@ -154,4 +164,12 @@ export const useGeResultValues = (
     const calculatedPrice = usePricCalc(diff[i], range, pap, daysInMonth[i])
     return useRoundUp(calculatedPrice, unref(round))
   })
+}
+
+
+function callback<T extends { date: any, options: any[] }, R extends Function>(data: T, cb: R) {
+  let d = useToDate(data.date)
+  let o = data.options
+
+  return cb(d, ...o)
 }
