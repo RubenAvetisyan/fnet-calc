@@ -1,15 +1,15 @@
 <template>
   <ion-datetime :id="id" :name="id" ref="datetime" size="cover" locale="hy"
     :presentation="dateAndTime ? 'date-time' : 'date'" :first-day-of-week="1" :multiple="multiple" :value="modelValue"
-    :show-default-buttons="true" done-text="Հաստատել" cancel-text="Թողնել նույնը" :min="min" :max="thisYear"
-    :dayValues="dayValues" :is-date-enabled="isDateEabled" :title="title" :year-values="thisYear"
+    :show-default-buttons="true" done-text="Հաստատել" cancel-text="Թողնել նույնը" :min="min" :max="nextMonthISO"
+    :dayValues="dayValues" :is-date-enabled="isDateEabled" :title="title"
     @ionChange="(event: any) => $emit('update:modelValue', event.detail.value)">
     <span v-if="title" slot="title">{{title}}</span>
   </ion-datetime>
 </template>
 
 <script setup lang="ts">
-import { getYear } from 'date-fns'
+import { getYear, getMonth, addMonths, endOfMonth, getDate, setDate, formatISO } from 'date-fns'
 
 const props = defineProps({
   id: { type: String, default: '' },
@@ -43,6 +43,10 @@ const props = defineProps({
 })
 
 const datetime = ref()
-
-const thisYear = getYear(Date.now())
+const thisMonth = getMonth(Date.now())
+const nextMonth = addMonths(new Date(), 1)
+const nextMonthISO = formatISO(setDate(nextMonth, getDate(endOfMonth(nextMonth))))
+console.log('nextMonthISO: ', nextMonthISO);
+console.log('nextMonth: ', nextMonth);
+const thisYear = [thisMonth, thisMonth + 1]
 </script>

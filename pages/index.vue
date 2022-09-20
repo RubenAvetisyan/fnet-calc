@@ -40,7 +40,7 @@ const priceAfterDiscount = computed(() => {
         </i-col>
         <i-col class="ion-align-self-end">
           <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Գումար</ion-label>
-          <InputEntry class="w-25 font-bold" :value="priceAfterDiscount" readonly />
+          <InputEntry class="w-25 font-bold" v-model="priceAfterDiscount" readonly />
         </i-col>
       </row>
     </grid>

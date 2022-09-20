@@ -106,7 +106,7 @@ const onClendarButtonsClick = (v: string) => async (closeOverlay: boolean) => {
 }
 
 const setNextEndDay = (start: Date) => {
-  const nextThirtyDays = addDays(start, 30)
+  const nextThirtyDays = addDays(start, 1)
   let nearestEndDay = nextThirtyDays
 
   for (let i = 0; i < 100; i++) {
