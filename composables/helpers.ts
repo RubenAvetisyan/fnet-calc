@@ -124,9 +124,10 @@ export const usePricCalc = (
 }
 
 export const useRoundUp = <T extends Prop<number>>(num: T, precision: T) => {
-  const [a, b] = useBatchUnref(num, precision)
-  const sf = `${a}`.substr(-2)
-  const simpleRound = `${a}`.substring(0, `${a}`.length - 2) + b
+  const [a, b] = useBatchUnref(num, precision) as number[]
+  const asString = `${a.toFixed(0)}`
+  const sf = asString.substr(-2)
+  const simpleRound = asString.substring(0, asString.length - 2) + b
 
   return +sf < b && +sf !== 0 ? simpleRound : Math.ceil(a / b) * b
 }
