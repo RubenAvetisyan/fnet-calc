@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { differenceInCalendarDays, isSameDay, subMonths, getMonth, setMonth, getDate, addMonths, setDate, addDays } from 'date-fns'
-import { Ref } from 'vue';
 
-console.log('test useRoundUp: ', useRoundUp(5000, 50))
 
 const props = defineProps({
   price: { type: Number, required: true },
@@ -13,7 +11,7 @@ const props = defineProps({
 
 const maxBillday = Math.max(...props.billdays)
 
-const minBillday = Math.min(...props.billdays)
+// const minBillday = Math.min(...props.billdays)
 
 const FORMAT = 'yyyy-MM-dd'
 
@@ -32,15 +30,13 @@ const startDateAsString = computed(() => {
 const anjatmanOr = computed(() => {
   return props.billdays.map(billday => {
     const sub = differenceInCalendarDays(setDate(unref(startDate), billday), unref(startDate))
-    console.log('sub: ', sub);
+
     const nextMonth = useAddMonths(startDay, 1)
 
     return sub <= 0 ? useSetDate(nextMonth, billday) : useSetDate(startDay, billday)
   })
 })
 
-
-// const sd = useBillingDay(props.billdays, unref(startDays))
 const filteredDays = computed(() => {
   return anjatmanOr.value.filter(day => {
     const diff = differenceInCalendarDays(day, useToDate(startDay))
@@ -54,8 +50,8 @@ const filteredDays = computed(() => {
 
 const end = unref(filteredDays)[0]
 const endDay = ref(useSetFormatForSingleDate(end, FORMAT))
-const endDate = computed(() => useToDate(startDay))
-console.log('endDate: ', endDate);
+// const endDate = computed(() => useToDate(startDay))
+
 
 const activeDays = computed(() => {
   return differenceInCalendarDays(useToDate(endDay), useToDate(startDay))
@@ -90,10 +86,6 @@ const onClick = (v: string) => () => {
   if (v === 'startDate') {
     return isStartDate.value = !isStartDate.value
   }
-}
-
-const onClendarButtonsClick = (v: string) => async (closeOverlay: boolean) => {
-  onClick(v)()
 }
 
 const config = ref({
@@ -133,9 +125,7 @@ watch(() => startDay.value, (start) => {
 <template><ion-card>
   <ion-card-header mb-0>
     <ion-card-subtitle mb-0>Ծառայության մատուցման`</ion-card-subtitle>
-    <!-- <ion-card-title>Ծառայության մատուցման`</ion-card-title> -->
   </ion-card-header>
-  <!-- <ion-label color="secondary"><span class="text-size-1rem">Ծառայության մատուցման`</span></ion-label> -->
   <ion-card-content>
     <grid>
       <row>
@@ -144,7 +134,6 @@ watch(() => startDay.value, (start) => {
       </row>
       <row class="ion-align-items-center">
         <i-col>
-          <!-- <mobi-select v-model="endDay" :values="orer" label="Անջատման օր՝"></mobi-select> -->
           <my-button id="open-end-modal" expand="block" color="primary" fill="solid" justify="center"
             :fn="onClick('endDate')">
             Անջատման օր` {{endDay}}

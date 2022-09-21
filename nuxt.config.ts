@@ -12,6 +12,11 @@ export default defineNuxtConfig({
   ionic: {
     integrations: {      
       pwa: true
+    },
+    css: {
+      basic:true,
+      core: true,
+      utilities: true
     }
   },
   experimental: {

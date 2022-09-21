@@ -1,5 +1,5 @@
 {
-  "name": "fnet-calc",
+  "name": "fnetcalc",
   "private": true,
   "packageManager": "pnpm@7.9.0",
   "scripts": {

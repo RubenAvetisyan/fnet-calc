@@ -3,7 +3,6 @@ import { calendar } from 'ionicons/icons'
 const props = defineProps({
   modelValue: {
     type: Number,
-    // default: () => ([])
   },
   values: { type: Array<number>, default: () => ([11, 16, 21]), required: true },
   label: { type: String, default: '' }
@@ -12,8 +11,6 @@ const props = defineProps({
 const reference = computed(() => {
   return props.modelValue
 })
-
-const date = ref(useFormatISO)
 </script>
 
 <template><ion-list>

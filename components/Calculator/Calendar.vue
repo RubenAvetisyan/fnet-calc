@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { getYear, getMonth, addMonths, endOfMonth, getDate, setDate, formatISO } from 'date-fns'
+import { getMonth, addMonths, endOfMonth, getDate, setDate, formatISO } from 'date-fns'
 
 const props = defineProps({
   id: { type: String, default: '' },
@@ -68,7 +68,4 @@ const confirm = () => {
 const thisMonth = getMonth(Date.now())
 const nextMonth = addMonths(new Date(), 1)
 const nextMonthISO = formatISO(setDate(nextMonth, getDate(endOfMonth(nextMonth))))
-console.log('nextMonthISO: ', nextMonthISO);
-console.log('nextMonth: ', nextMonth);
-const thisYear = [thisMonth, thisMonth + 1]
 </script>

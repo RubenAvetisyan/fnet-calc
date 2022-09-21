@@ -21,22 +21,10 @@ const props = defineProps({
 
 const num = ref(0)
 
-// const router = useRouter()
-const go = () => {
-  // if (name.value)
-  // router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
-
 const placeholder = ref('')
-
-// const { $emit } = useNuxtApp()
-
-// watch(() => props.modelValue, (n) => {
-//   $emit('ionInput', n)
-// })
 </script>
 
-<template><!-- @keydown.enter="go" -->
+<template>
 <ion-input id="input" type="number" inputmode="number" color="medium" v-model="modelValue" :value="defaultValue || num"
   :placeholder="placeholder"
   autocomplete="off" p="x-4 y-2" m="t-1 x-1" text="center" bg="transparent" border="~ rounded gray-200 dark:gray-700"

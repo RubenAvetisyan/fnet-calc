@@ -140,11 +140,11 @@ export const useGeResultValue = (
   round: Prop<number>
 ) => {
   const daysinmonth = getDaysInMonth(useToDate(startDate))
-  console.log('daysinmonth: ', daysinmonth);
+  
   const difference = differenceInCalendarDays(unref(startDate), unref(endDate))
-  console.log('difference: ', difference);
+  
   const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)
-  console.log('calculatedPrice: ', calculatedPrice);
+  
 
   return useRoundUp(calculatedPrice, unref(round))
 }
