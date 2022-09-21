@@ -23,15 +23,6 @@ const startDay = ref(today)
 
 const previousMonth = subMonths(Date.now(), 1)
 
-const config = ref({
-  startDate: {
-    min: useFormatISO(setDate(previousMonth, maxBillday))
-  },
-  endDate: {
-    min: useFormatISO(Date.now())
-  }
-})
-
 
 
 const startDate = computed(() => useToDate(startDay))
@@ -105,6 +96,19 @@ const onClendarButtonsClick = (v: string) => async (closeOverlay: boolean) => {
   onClick(v)()
 }
 
+const config = ref({
+  startDate: {
+    min: useFormatISO(setDate(previousMonth, maxBillday)),
+    confirm: !isEndDate.value,
+    cancel: !isEndDate.value,
+  },
+  endDate: {
+    min: useFormatISO(Date.now()),
+    confirm: !isStartDate.value,
+    cancel: !isStartDate.value,
+  }
+})
+
 const setNextEndDay = (start: Date) => {
   const nextThirtyDays = addDays(start, 1)
   let nearestEndDay = nextThirtyDays
@@ -164,10 +168,11 @@ watch(() => startDay.value, (start) => {
     </List>
     <modal :is-open="isEndDate">
       <CalculatorCalendar id="endDate" v-model="endDay" :min="config.endDate.min" :is-date-eabled="isDateEabled"
-        title="Նշել անջատման օրվա ամսաթիվը" />
-    </modal>
-    <modal :is-open="isStartDate">
-      <CalculatorCalendar id="startDate" v-model="startDay" :min="config.startDate.min"
+        :confirm="onClick('endDate')" :cancel="onClick('endDate')" title="Նշել անջատման օրվա ամսաթիվը" />
+      </modal>
+      <modal :is-open="isStartDate">
+        <CalculatorCalendar id="startDate" v-model="startDay" :min="config.startDate.min" :confirm="onClick('startDate')"
+          :cancel="onClick('startDate')"
         title="Նշել միացման օրվա ամսաթիվը" />
     </modal>
   </ion-card-content>

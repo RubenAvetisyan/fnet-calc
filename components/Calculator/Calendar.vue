@@ -5,6 +5,10 @@
     :dayValues="dayValues" :is-date-enabled="isDateEabled" :title="title"
     @ionChange="(event: any) => $emit('update:modelValue', event.detail.value)">
     <span v-if="title" slot="title">{{title}}</span>
+    <ion-buttons slot="buttons">
+      <ion-button color="primary" @click="cancel()">Թողնել նույնը</ion-button>
+      <ion-button color="primary" @click="confirm()">Հաստատել</ion-button>
+    </ion-buttons>
   </ion-datetime>
 </template>
 
@@ -38,11 +42,29 @@ const props = defineProps({
     type: Function,
     default: () => true
   },
-  confirm: Function,
-  cancel: Function
+  confirm: {
+    type: Function,
+    default: () => { }
+  },
+  cancel: {
+    type: Function,
+    default: () => { }
+  }
 })
 
 const datetime = ref()
+const reset = () => {
+  datetime.value.$el.reset()
+};
+const cancel = () => {
+  props.cancel()
+  datetime.value.$el.cancel()
+};
+const confirm = () => {
+  props.confirm()
+  datetime.value.$el.confirm()
+};
+
 const thisMonth = getMonth(Date.now())
 const nextMonth = addMonths(new Date(), 1)
 const nextMonthISO = formatISO(setDate(nextMonth, getDate(endOfMonth(nextMonth))))
