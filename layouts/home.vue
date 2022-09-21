@@ -1,6 +1,6 @@
 <template>
   <ion-app align="content-center">
-    <ion-page class="ion-padding-start lg:px-1/9">
+    <ion-page class="ion-padding-start">
       <ion-header class="flex text-center items-center mb-1">
         <ion-toolbar>
           <Logos />
