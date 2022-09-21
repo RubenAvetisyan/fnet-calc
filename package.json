@@ -1,16 +1,17 @@
 {
-  "name": "fnetcalc",
+  "name": "fnet-calc",
   "private": true,
   "packageManager": "pnpm@7.9.0",
   "scripts": {
     "build": "nuxi build",
     "dev": "nuxi dev",
     "start": "node .output/server/index.mjs",
+    "serve": "nuxi start",
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
     "generate": "nuxi generate",
-    "ionic:build": "pnpm run build && pnpm run generate",
-    "ionic:serve": "pnpm run start"
+    "ionic:build": "pnpm run generate",
+    "ionic:serve": "pnpm run serve"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.2",
@@ -22,6 +23,7 @@
     "@pinia/nuxt": "^0.4.1",
     "@unocss/nuxt": "^0.45.13",
     "@vueuse/nuxt": "^9.1.1",
+    "cordova-res": "0.15.4",
     "date-fns": "^2.29.3",
     "eslint": "^8.23.0",
     "nuxt": "^3.0.0-rc.8",
