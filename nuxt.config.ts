@@ -9,16 +9,16 @@ export default defineNuxtConfig({
     'nuxt-ionic',
     '@nuxtjs/color-mode',
   ],
-  ionic: {
-    integrations: {      
-      pwa: true
-    },
-    css: {
-      basic:true,
-      core: true,
-      utilities: true
-    }
-  },
+  // ionic: {
+  //   integrations: {      
+  //     pwa: true
+  //   },
+  //   css: {
+  //     basic:true,
+  //     core: true,
+  //     utilities: true
+  //   }
+  // },
   experimental: {
     reactivityTransform: true,
     viteNode: false,
