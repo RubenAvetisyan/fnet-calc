@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { format, getDate, getDaysInMonth, differenceInCalendarDays, differenceInDays, parseISO, toDate, addDays, setDate, formatISO, addMonths } from 'date-fns'
+import { format, isSameDay, getDate, getDaysInMonth, differenceInCalendarDays, parseISO, toDate, addDays, subDays, setDate, formatISO, addMonths } from 'date-fns'
 
 type Prop<T> = T | Ref<T>
 
@@ -11,6 +11,9 @@ type Format = Prop<string>
 type UseSetFormat = (date: Dates, dateFormat: Format) => string[] | string
 type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFormat: Format) => string
 
+export const useIsSameDay = (dateLeft: Prop<string | number | Date>, dateRight: Prop<string | number | Date>) => {
+  return isSameDay(useToDate(dateLeft), useToDate(dateRight))
+}
 export const useToDate = (date: Prop<string | number | Date>) => {
   const theDate = unref(date)
   if (theDate instanceof Date) return theDate
@@ -39,6 +42,10 @@ export const useFormatISO = (
 export const useAddDays = (date: Prop<Date | number | string>, amount: number): Date => {
   return callback({ date, options: [amount] }, addDays)
 }
+export const useSubDays = (date: Prop<Date | number | string>, amount: number): Date => {
+  return callback({ date, options: [amount] }, subDays)
+}
+
 
 export const useSetDate = (date: Prop<Date | number | string>, dayOfMonth: number):Date => {
   return callback({ date, options: [dayOfMonth] }, setDate)
@@ -90,17 +97,8 @@ export const useBillingDay = (billdays: number[], startday: number) => {
     .sort((a: number, b: number) => b - a)[0]
 }
 
-export const useDifferenceInCalendarDay = (start: Prop<string | number | Date>, end: Prop<number | Date>) => { 
-  const startDays = useToDate(start)
-  const endDay = unref(end)
-
-  return Math.abs(differenceInCalendarDays(endDay, startDays))
-}
-
-export const useDifferenceInCalendarDays = (start: Prop<number[] | Date[]>, end: Prop<number | Date>) => { 
-  const startDays = unref(start)
-  const endDay = unref(end)
-  return startDays.map((n) => Math.abs(differenceInCalendarDays(endDay, n)))
+export const useDifferenceInCalendarDay = (start: Prop<string | number | Date>, end: Prop<string | number | Date>): number => { 
+  return differenceInCalendarDays(useToDate(start), useToDate(end))
 }
 export const useGetDifference = (arr: number[], num: number) => {
   return arr.map((n: number) => unref(num) - n)

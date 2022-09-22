@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { differenceInCalendarDays, isSameDay, subMonths, getMonth, setMonth, getDate, addMonths, setDate, addDays } from 'date-fns'
+import { subMonths, addDays } from 'date-fns'
+import { id } from 'date-fns/locale';
 
 
 const props = defineProps({
@@ -21,6 +22,9 @@ const startDay = ref(today)
 
 const previousMonth = subMonths(Date.now(), 1)
 
+const isDateEabled = useIsDateEabled(props.billdays)
+console.log('isDateEabled: ', isDateEabled(useToDate('2022-10-11')));
+
 
 
 const startDate = computed(() => useToDate(startDay))
@@ -29,7 +33,7 @@ const startDateAsString = computed(() => {
 })
 const anjatmanOr = computed(() => {
   return props.billdays.map(billday => {
-    const sub = differenceInCalendarDays(setDate(unref(startDate), billday), unref(startDate))
+    const sub = useDifferenceInCalendarDay(useSetDate(startDate, billday), startDate)
 
     const nextMonth = useAddMonths(startDay, 1)
 
@@ -39,29 +43,23 @@ const anjatmanOr = computed(() => {
 
 const filteredDays = computed(() => {
   return anjatmanOr.value.filter(day => {
-    const diff = differenceInCalendarDays(day, useToDate(startDay))
+    const diff = useDifferenceInCalendarDay(day, startDay)
 
     const res = diff >= 0
 
     return res
-  }).sort((a, b) => differenceInCalendarDays(a, b))
+  }).sort((a, b) => useDifferenceInCalendarDay(a, b))
 })
 
 
 const end = unref(filteredDays)[0]
 const endDay = ref(useSetFormatForSingleDate(end, FORMAT))
-// const endDate = computed(() => useToDate(startDay))
+const endDate = computed(() => useToDate(startDay))
 
 
 const activeDays = computed(() => {
-  return differenceInCalendarDays(useToDate(endDay), useToDate(startDay))
+  return useDifferenceInCalendarDay(endDay, startDay)
 })
-
-const isDateEabled = (dateString: string | Date) => {
-  const date = typeof dateString === 'string' ? useToDate(dateString) : dateString
-  const isDate = props.billdays.some(billday => isSameDay(setDate(date, billday), date))
-  return isDate
-}
 
 
 const result = computed(() => {
@@ -70,7 +68,7 @@ const result = computed(() => {
 
 const items = computed(() => {
   return [`Միացման օր՝ ${useSetFormat(unref(startDate), 'dd/MM/yyyy')}`,
-  `Անջատման օր՝ ${useSetFormat(unref(endDay), 'dd/MM/yyyy')}`,
+    `Անջատման օր՝ ${useSetFormat(unref(endDate), 'dd/MM/yyyy')}`,
   `Վճարման ենթակա գումար՝ ${unref(result)}դր.`
   ]
 })
@@ -90,7 +88,7 @@ const onClick = (v: string) => () => {
 
 const config = ref({
   startDate: {
-    min: useFormatISO(setDate(previousMonth, maxBillday)),
+    min: useFormatISO(useSetDate(previousMonth, maxBillday)),
     confirm: !isEndDate.value,
     cancel: !isEndDate.value,
   },
@@ -101,24 +99,34 @@ const config = ref({
   }
 })
 
-const setNextEndDay = (start: Date) => {
-  const nextThirtyDays = addDays(start, 1)
-  let nearestEndDay = nextThirtyDays
+const initiator = ref('')
+watch(() => {
+  return {
+    start: startDay.value,
+    end: endDay.value
+  }
+}, ({ start, end }, { start: oldStart, end: oldEnd }) => {
+  console.log('start === oldStart && end === oldEnd: ', start === oldStart && end === oldEnd);
+  if (start === oldStart && end === oldEnd) return
 
-  for (let i = 0; i < 100; i++) {
-    if (isDateEabled(nearestEndDay)) {
-      break;
-    }
-
-    nearestEndDay = addDays(nearestEndDay, 1)
+  console.log(`start !== oldStart && initiator.value !== 'endDay': `, start !== oldStart && initiator.value !== 'endDay');
+  if (start !== oldStart && initiator.value !== 'endDay') {
+    initiator.value = 'startDay'
+    const nearestDay = useSetNextEndDay(start, props.billdays, 'add')
+    endDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
+    return
   }
 
-  return nearestEndDay
-}
+  console.log(`end !== oldEnd && initiator.value !== 'startDay': `, end !== oldEnd && initiator.value !== 'startDay');
+  if (end !== oldEnd && initiator.value !== 'startDay') {
+    initiator.value = 'endDay'
+    const nearestDay = useSetNextEndDay(end, props.billdays, 'sub')
+    startDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
+    return
+  }
 
-watch(() => startDay.value, (start) => {
-  const diff = differenceInCalendarDays(useToDate(start), useToDate(endDay.value))
-  if (diff > 0) endDay.value = useSetFormatForSingleDate(setNextEndDay(useToDate(start)), FORMAT)
+  initiator.value = ''
+
 })
 </script>
 
@@ -158,11 +166,10 @@ watch(() => startDay.value, (start) => {
     <modal :is-open="isEndDate">
       <CalculatorCalendar id="endDate" v-model="endDay" :min="config.endDate.min" :is-date-eabled="isDateEabled"
         :confirm="onClick('endDate')" :cancel="onClick('endDate')" title="Նշել անջատման օրվա ամսաթիվը" />
-      </modal>
-      <modal :is-open="isStartDate">
-        <CalculatorCalendar id="startDate" v-model="startDay" :min="config.startDate.min" :confirm="onClick('startDate')"
-          :cancel="onClick('startDate')"
-        title="Նշել միացման օրվա ամսաթիվը" />
+    </modal>
+    <modal :is-open="isStartDate">
+      <CalculatorCalendar id="startDate" v-model="startDay" :min="config.startDate.min" :confirm="onClick('startDate')"
+        :cancel="onClick('startDate')" title="Նշել միացման օրվա ամսաթիվը" />
     </modal>
   </ion-card-content>
   </ion-card>
