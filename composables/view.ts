@@ -14,7 +14,8 @@ export const useIsDateEabled = (billdays: Prop<number[]>) => (dateString: Asdate
 
 export const useSetNextEndDay = (date: Asdate, billdays: Prop<number[]>, type: 'add' | 'sub') => {
   const lastDate = useToDate(date)
-  const isDateEabled = useIsDateEabled(billdays) 
+  const natural = type === 'sub' ? unref(billdays) : billdays
+  const isDateEabled = useIsDateEabled(natural) 
   
   let nearestEndDay = exp(lastDate, type)
 
@@ -34,7 +35,7 @@ function exp(date: Date, type: 'add' | 'sub') {
     if (type === 'add') return useAddDays(date, 1)
     if (type === 'sub') return useSubDays(date, 1)
 
-    throw createError({ message: 'Es inch qaqes kerel Doooo? :)', fatal: true})
+    throw createError({ message: 'Es inch qaqes kerel Doooo ara? :)', fatal: true})
   } catch (error: any) {
     showError(error);
     return date

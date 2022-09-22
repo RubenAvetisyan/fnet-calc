@@ -95,7 +95,7 @@ const config = ref({
     cancel: !isEndDate.value,
   },
   endDate: {
-    min: useFormatISO(Date.now()),
+    min: useFormatISO(startDate),
     confirm: !isStartDate.value,
     cancel: !isStartDate.value,
   }
@@ -111,17 +111,17 @@ watch(() => {
 
   if (start === oldStart && end === oldEnd) return
 
+  const difference = useDifferenceInCalendarDay(end, start)
 
   if (start !== oldStart && initiator.value !== 'endDay') {
     initiator.value = 'startDay'
     const nearestDay = useSetNextEndDay(start, props.billdays, 'add')
+    config.value.endDate.min = useFormatISO(startDate)
     endDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
     return
   }
 
-  const difference = useDifferenceInCalendarDay(start, end)
-
-  if (end !== oldEnd && initiator.value !== 'startDay' && difference < 1) {
+  if (end !== oldEnd && initiator.value !== 'startDay' && (difference < 1 || difference > 30)) {
     initiator.value = 'endDay'
     const nearestDay = useSetNextEndDay(end, props.billdays, 'sub')
     startDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
@@ -157,7 +157,7 @@ watch(() => {
         </i-col>
       </row>
       <row>
-        <ion-label color="warning"><span class="text-size-0.8rem">ակտիվ օրերի քանակ՝ {{ activeDays }}</span>
+        <ion-label color="warning"><span class="text-size-0.8rem">ակտիվ օրերի քանակ (հավելյալ)՝ {{ activeDays }}</span>
         </ion-label>
       </row>
     </grid>
