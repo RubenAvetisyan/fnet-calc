@@ -54,7 +54,7 @@ const filteredDays = computed(() => {
 
 const end = unref(filteredDays)[0]
 const endDay = ref(useSetFormatForSingleDate(end, FORMAT))
-const endDate = computed(() => useToDate(startDay))
+const endDate = computed(() => useToDate(endDay))
 
 
 const activeDays = computed(() => {
