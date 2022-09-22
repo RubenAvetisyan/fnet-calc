@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { subMonths, addDays } from 'date-fns'
-import { id } from 'date-fns/locale';
+import { subMonths } from 'date-fns'
 
 
 const props = defineProps({
@@ -23,7 +22,7 @@ const startDay = ref(today)
 const previousMonth = subMonths(Date.now(), 1)
 
 const isDateEabled = useIsDateEabled(props.billdays)
-console.log('isDateEabled: ', isDateEabled(useToDate('2022-10-11')));
+
 
 
 
@@ -72,7 +71,7 @@ const result = computed(() => {
 const items = computed(() => {
   return [`Միացման օր՝ ${useSetFormat(unref(startDate), 'dd/MM/yyyy')}`,
     `Անջատման օր՝ ${useSetFormat(unref(endDate), 'dd/MM/yyyy')}`,
-  `Վճարման ենթակա գումար՝ ${unref(result)}դր.`
+    `Վճարման ենթակա գումար՝ ${unref(result)}դր.`
   ]
 })
 
@@ -109,10 +108,10 @@ watch(() => {
     end: endDay.value
   }
 }, ({ start, end }, { start: oldStart, end: oldEnd }) => {
-  console.log('start === oldStart && end === oldEnd: ', start === oldStart && end === oldEnd);
+
   if (start === oldStart && end === oldEnd) return
 
-  console.log(`start !== oldStart && initiator.value !== 'endDay': `, start !== oldStart && initiator.value !== 'endDay');
+
   if (start !== oldStart && initiator.value !== 'endDay') {
     initiator.value = 'startDay'
     const nearestDay = useSetNextEndDay(start, props.billdays, 'add')
@@ -120,8 +119,9 @@ watch(() => {
     return
   }
 
-  console.log(`end !== oldEnd && initiator.value !== 'startDay': `, end !== oldEnd && initiator.value !== 'startDay');
-  if (end !== oldEnd && initiator.value !== 'startDay') {
+  const difference = useDifferenceInCalendarDay(start, end)
+
+  if (end !== oldEnd && initiator.value !== 'startDay' && difference < 1) {
     initiator.value = 'endDay'
     const nearestDay = useSetNextEndDay(end, props.billdays, 'sub')
     startDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)

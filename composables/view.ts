@@ -1,3 +1,4 @@
+import { NuxtError } from "#app"
 import { Ref } from "vue"
 
 type Prop<T> = T | Ref<T>
@@ -13,26 +14,29 @@ export const useIsDateEabled = (billdays: Prop<number[]>) => (dateString: Asdate
 
 export const useSetNextEndDay = (date: Asdate, billdays: Prop<number[]>, type: 'add' | 'sub') => {
   const lastDate = useToDate(date)
-  console.log('lastDate: ', lastDate, type);
-  // const endDate = useToDate(end)
-  const isDateEabled = useIsDateEabled(billdays)
-
-  // const diff = useDifferenceInCalendarDay(endDate, startDate)
-  // console.log('diff: ', diff);
-  const exp = (s: Date) => { 
-    if (type === 'add') return useAddDays(s, 1)
-    if (type === 'sub') return useSubDays(s, 1)
-    throw new Error('Es inch qaqes kerel? :)')
-  }
-  let nearestEndDay = exp(lastDate)
+  const isDateEabled = useIsDateEabled(billdays) 
+  
+  let nearestEndDay = exp(lastDate, type)
 
   for (let i = 0; i < 31; i++) {
     if (isDateEabled(nearestEndDay)) {
       break;
     }
 
-    nearestEndDay = exp(nearestEndDay)
+    nearestEndDay = exp(nearestEndDay, type)
   }
 
   return nearestEndDay
+}
+
+function exp(date: Date, type: 'add' | 'sub') { 
+  try {
+    if (type === 'add') return useAddDays(date, 1)
+    if (type === 'sub') return useSubDays(date, 1)
+
+    throw createError({ message: 'Es inch qaqes kerel Doooo? :)', fatal: true})
+  } catch (error: any) {
+    showError(error);
+    return date
+  }
 }

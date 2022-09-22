@@ -1,23 +1,26 @@
-import { ComputedRef, Ref } from 'vue';
+import { Ref } from 'vue';
 import { format, isSameDay, getDate, getDaysInMonth, differenceInCalendarDays, parseISO, toDate, addDays, subDays, setDate, formatISO, addMonths } from 'date-fns'
 
 type Prop<T> = T | Ref<T>
 
-type DateString = Prop<Date | string>
+type Asdate = Prop<string | number | Date>
+type AsdateArray = Prop<string[] | number[] | Date[]>
+
+// type DateString = Prop<Date | string>
 type Strings = Prop<string | string[]>
-type Dates = Prop<string | Date | number | string[] | Date[] | number[]>
+type Dates = Asdate | AsdateArray
+
 type Format = Prop<string>
 
 type UseSetFormat = (date: Dates, dateFormat: Format) => string[] | string
-type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFormat: Format) => string
+// type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFormat: Format) => string
 
-export const useIsSameDay = (dateLeft: Prop<string | number | Date>, dateRight: Prop<string | number | Date>) => {
+export const useIsSameDay = (dateLeft: Asdate, dateRight: Asdate) => {
   return isSameDay(useToDate(dateLeft), useToDate(dateRight))
 }
-export const useToDate = (date: Prop<string | number | Date>) => {
+export const useToDate = (date: Asdate) => {
   const theDate = unref(date)
-  if (theDate instanceof Date) return theDate
-
+  
   if (typeof theDate === 'string') {
     return parseISO(theDate)
   }
@@ -30,7 +33,7 @@ export const useToDate = (date: Prop<string | number | Date>) => {
 }
 
 export const useFormatISO = (
-  date: Prop<Date | number | string>,
+  date: Asdate,
   options?: {
     format?: 'extended' | 'basic';
     representation?: 'complete' | 'date' | 'time';
@@ -39,24 +42,24 @@ export const useFormatISO = (
   return callback({ date, options: [options] }, formatISO)
 }
 
-export const useAddDays = (date: Prop<Date | number | string>, amount: number): Date => {
+export const useAddDays = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, addDays)
 }
-export const useSubDays = (date: Prop<Date | number | string>, amount: number): Date => {
+export const useSubDays = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, subDays)
 }
 
 
-export const useSetDate = (date: Prop<Date | number | string>, dayOfMonth: number):Date => {
+export const useSetDate = (date: Asdate, dayOfMonth: number):Date => {
   return callback({ date, options: [dayOfMonth] }, setDate)
 }
 
-export const useAddMonths = (date: Prop<Date | number | string>, amount: number) => {
+export const useAddMonths = (date: Asdate, amount: number) => {
   return callback({ date, options: [amount] }, addMonths)
 }
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
-export const useSetFormatForSingleDate = (date: Prop<string | number | Date>, dateFormat: Prop<String>) => {
+export const useSetFormatForSingleDate = (date: Asdate, dateFormat: Prop<String>) => {
   const [d, f] = useBatchUnref(date, dateFormat)
 
   if (typeof d === 'string') {
@@ -87,19 +90,21 @@ export const useDatesStringToNumber = (d: Strings) => {
   return getDate(parseISO(date))
 }
 export const useBillingDays = (billdays: number[], startdays: number[]) => {
-  return billdays.filter((d: number) => startdays
-    .some((date: number) => d > date))
+  return billdays.filter((d: number) => startdays.some((date: number) => d > date))
     .sort((a: number, b: number) => b - a)[0]
 }
 
 export const useBillingDay = (billdays: number[], startday: number) => {
-  return billdays.filter((billday: number) => startday < billday)
-    .sort((a: number, b: number) => b - a)[0]
+  const filteredBillingDays = billdays.filter((billday: number) => startday < billday)
+  const soretrdBillingDays = filteredBillingDays.sort((a: number, b: number) => b - a)
+
+  return soretrdBillingDays[0]
 }
 
-export const useDifferenceInCalendarDay = (start: Prop<string | number | Date>, end: Prop<string | number | Date>): number => { 
+export const useDifferenceInCalendarDay = (start: Asdate, end: Asdate): number => { 
   return differenceInCalendarDays(useToDate(start), useToDate(end))
 }
+
 export const useGetDifference = (arr: number[], num: number) => {
   return arr.map((n: number) => unref(num) - n)
 }
@@ -137,12 +142,9 @@ export const useGeResultValue = (
   priceAfterPerscent: Prop<number>,
   round: Prop<number>
 ) => {
-  const daysinmonth = getDaysInMonth(useToDate(startDate))
-  
-  const difference = differenceInCalendarDays(unref(startDate), unref(endDate))
-  
-  const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)
-  
+  const daysinmonth = getDaysInMonth(useToDate(startDate))  
+  const difference = differenceInCalendarDays(unref(startDate), unref(endDate))  
+  const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)  
 
   return useRoundUp(calculatedPrice, unref(round))
 }
@@ -159,6 +161,7 @@ export const useGeResultValues = (
   const diff = unref(difference)
   const range = unref(maxRange)
   const pap = priceAfterPerscent
+
   return unref(startdays).map((startDate: number, i) => {
     const calculatedPrice = usePricCalc(diff[i], range, pap, daysInMonth[i])
     return useRoundUp(calculatedPrice, unref(round))
