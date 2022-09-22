@@ -7,7 +7,7 @@ useHead({
 
 const price = ref(5000)
 const percent = ref(0)
-const billdays = [11, 16, 21]
+
 
 const priceAfterDiscount = computed(() => {
   const pp: number = unref(price)
@@ -37,6 +37,6 @@ const priceAfterDiscount = computed(() => {
       </row>
     </grid>
   
-    <CalculatorView :price="price" :percent="percent" :price-after-discount="priceAfterDiscount" :billdays="billdays" />
+    <CalculatorView :price="price" :percent="percent" :price-after-discount="priceAfterDiscount" />
   </NuxtLayout>
 </template>

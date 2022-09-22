@@ -1,4 +1,3 @@
-import { NuxtError } from "#app"
 import { Ref } from "vue"
 
 type Prop<T> = T | Ref<T>

@@ -5,8 +5,8 @@
     :title="title" @ionChange="(event: any) => $emit('update:modelValue', event.detail.value)">
     <span v-if="title" slot="title">{{title}}</span>
     <ion-buttons slot="buttons">
-      <ion-button color="primary" @click="cancel()">Թողնել նույնը</ion-button>
-      <ion-button color="primary" @click="confirm()">Հաստատել</ion-button>
+      <ion-button color="primary" @click="cancel(id as Identifire)">Թողնել նույնը</ion-button>
+      <ion-button color="primary" @click="confirm(id as Identifire)">Հաստատել</ion-button>
     </ion-buttons>
   </ion-datetime>
 </template>
@@ -44,26 +44,24 @@ const props = defineProps({
     type: Function,
     default: () => true
   },
-  confirm: {
-    type: Function,
-    default: () => { }
-  },
-  cancel: {
-    type: Function,
-    default: () => { }
-  }
 })
+
+const { toggleIsEndDate } = useCalendarStore()
+
+type Identifire = 'endDate' | 'startDate'
 
 const datetime = ref()
 const reset = () => {
   datetime.value.$el.reset()
 };
-const cancel = () => {
-  props.cancel()
+
+const cancel = <T extends Identifire>(name: T) => {
+  toggleIsEndDate(name)
   datetime.value.$el.cancel()
 };
-const confirm = () => {
-  props.confirm()
+
+const confirm = <T extends Identifire>(name: T) => {
+  toggleIsEndDate(name)
   datetime.value.$el.confirm()
 };
 
