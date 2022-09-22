@@ -55,6 +55,9 @@ const filteredDays = computed(() => {
 const end = unref(filteredDays)[0]
 const endDay = ref(useSetFormatForSingleDate(end, FORMAT))
 const endDate = computed(() => useToDate(endDay))
+const endDateAsString = computed(() => {
+  return useSetFormat(endDay, FORMAT)
+})
 
 
 const activeDays = computed(() => {
@@ -144,7 +147,7 @@ watch(() => {
         <i-col>
           <my-button id="open-end-modal" expand="block" color="primary" fill="solid" justify="center"
             :fn="onClick('endDate')">
-            Անջատման օր` {{endDay}}
+            Անջատման օր` {{endDateAsString}}
           </my-button>
         </i-col>
         <i-col>
