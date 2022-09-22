@@ -122,7 +122,7 @@ export const usePricCalc = (
   daysInMonth: Prop<number>
 ) => {
   return unref(difference) <= unref(lesThen)
-    ? Math.abs(unref(difference)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
+    ?  Math.abs(unref(difference)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
     : unref(priceAfterPerscent)
 }
 
@@ -143,7 +143,8 @@ export const useGeResultValue = (
   round: Prop<number>
 ) => {
   const daysinmonth = getDaysInMonth(useToDate(startDate))  
-  const difference = differenceInCalendarDays(unref(startDate), unref(endDate))  
+  const difference = Math.abs(useDifferenceInCalendarDay(startDate, endDate))  
+  console.log('difference: ', difference);
   const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)  
 
   return useRoundUp(calculatedPrice, unref(round))

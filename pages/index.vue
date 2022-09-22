@@ -26,7 +26,7 @@ const priceAfterDiscount = computed(() => {
           </ion-label>
           <InputEntry v-model="price" />
         </i-col>
-        <i-col class="ion-align-self-center max-w-sm">
+        <i-col size="3" class="ion-align-self-center max-w-sm">
           <ion-label color="primary" position="fixed" class="font-bold text-size-1rem">Զեղչ %</ion-label>
           <InputEntry v-model="percent" :max="100" :max-length="3" />
         </i-col>
