@@ -1,5 +1,10 @@
 import { Ref } from 'vue';
-import { format, isSameDay, getDate, getDaysInMonth, differenceInCalendarDays, parseISO, toDate, addDays, subDays, setDate, formatISO, addMonths } from 'date-fns'
+import {
+  format, isSameDay, getDate, getDaysInMonth,
+  differenceInCalendarDays, parseISO, toDate,
+  addDays, subDays, setDate, formatISO, addMonths,
+  subMonths, endOfMonth
+} from 'date-fns'
 
 type Prop<T> = T | Ref<T>
 
@@ -42,21 +47,34 @@ export const useFormatISO = (
   return callback({ date, options: [options] }, formatISO)
 }
 
+export const useSetDate = (date: Asdate, dayOfMonth: number):Date => {
+  
+  
+  return callback({ date, options: [dayOfMonth] }, setDate)
+}
+
 export const useAddDays = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, addDays)
 }
+
 export const useSubDays = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, subDays)
-}
-
-
-export const useSetDate = (date: Asdate, dayOfMonth: number):Date => {
-  return callback({ date, options: [dayOfMonth] }, setDate)
 }
 
 export const useAddMonths = (date: Asdate, amount: number) => {
   return callback({ date, options: [amount] }, addMonths)
 }
+
+export const useSubMonths = (date: Asdate, amount: number) => {
+  return callback({ date, options: [amount] }, subMonths)
+}
+
+export const useEndOfMonth = (date: Asdate) => {
+  const result = callback({ date }, endOfMonth)
+  
+  return result
+}
+
 export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
 
 export const useSetFormatForSingleDate = (date: Asdate, dateFormat: Prop<String>) => {
@@ -144,7 +162,7 @@ export const useGeResultValue = (
 ) => {
   const daysinmonth = getDaysInMonth(useToDate(startDate))  
   const difference = Math.abs(useDifferenceInCalendarDay(startDate, endDate))  
-  console.log('difference: ', difference);
+  
   const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)  
 
   return useRoundUp(calculatedPrice, unref(round))
@@ -170,9 +188,14 @@ export const useGeResultValues = (
 }
 
 
-function callback<T extends { date: any, options: any[] }, R extends Function>(data: T, cb: R) {
-  let d = useToDate(data.date)
-  let o = data.options
+function callback<T extends { date: any, options?: any[] }, R extends Function>(data: T, cb: R) {
+  try {
+    let d = useToDate(data.date)
+  let o = data.options || []
 
   return cb(d, ...o)
+  } catch (error) {
+    
+    
+  }
 }

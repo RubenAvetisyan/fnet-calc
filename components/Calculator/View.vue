@@ -20,6 +20,7 @@ const today = useSetFormatForSingleDate(new Date(), FORMAT)
 const startDay = ref(today)
 
 const previousMonth = subMonths(Date.now(), 1)
+const nextMonth = useAddMonths(Date.now(), 1)
 
 const isDateEabled = useIsDateEabled(props.billdays)
 
@@ -96,6 +97,7 @@ const config = ref({
   },
   endDate: {
     min: useFormatISO(startDate),
+    max: useFormatISO(useAddMonths(Date.now(), 1)),
     confirm: !isStartDate.value,
     cancel: !isStartDate.value,
   }
@@ -116,7 +118,13 @@ watch(() => {
   if (start !== oldStart && initiator.value !== 'endDay') {
     initiator.value = 'startDay'
     const nearestDay = useSetNextEndDay(start, props.billdays, 'add')
-    config.value.endDate.min = useFormatISO(startDate)
+
+    const nextMonth = useAddMonths(startDate, 1)
+    const maxDate = useSetDate(nextMonth, useGetDaysInMonth(nextMonth))
+    const minDate = useSetDate(Date.now(), 1)
+
+    config.value.endDate.min = useFormatISO(minDate)
+    config.value.endDate.max = useFormatISO(maxDate)
     endDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
     return
   }
@@ -168,6 +176,7 @@ watch(() => {
     </List>
     <modal :is-open="isEndDate">
       <CalculatorCalendar id="endDate" v-model="endDay" :min="config.endDate.min" :is-date-eabled="isDateEabled"
+        :max="config.endDate.max"
         :confirm="onClick('endDate')" :cancel="onClick('endDate')" title="Նշել անջատման օրվա ամսաթիվը" />
     </modal>
     <modal :is-open="isStartDate">
