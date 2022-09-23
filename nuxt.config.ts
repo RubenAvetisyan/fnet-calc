@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
   ],
   // ionic: {
-  //   integrations: {      
+  //   integrations: {
   //     pwa: true
   //   },
   //   css: {
@@ -43,14 +43,14 @@ export default defineNuxtConfig({
   head: {
     title: 'Netcalc - fNet Telecom',
     htmlAttrs: {
-      lang: 'hy'
+      lang: 'hy',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' }
+      { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' },
     ],
   },
 
-  css: ['~/assets/core.css']
+  css: ['~/assets/core.css'],
 })

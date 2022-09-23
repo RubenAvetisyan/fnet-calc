@@ -1,9 +1,9 @@
-import { Ref } from 'vue';
+import type { Ref } from 'vue'
 import {
-  format, isSameDay, getDate, getDaysInMonth,
-  differenceInCalendarDays, parseISO, toDate,
-  addDays, subDays, setDate, formatISO, addMonths,
-  subMonths, endOfMonth
+  addDays, addMonths, differenceInCalendarDays, endOfMonth,
+  format, formatISO, getDate,
+  getDaysInMonth, isSameDay, parseISO, setDate, subDays,
+  subMonths, toDate,
 } from 'date-fns'
 
 type Prop<T> = T | Ref<T>
@@ -20,36 +20,33 @@ type Format = Prop<string>
 type UseSetFormat = (date: Dates, dateFormat: Format) => string[] | string
 // type UseSingleSetFormat = (date: Exclude<Dates, Prop<string[] | Date[]>>, dateFormat: Format) => string
 
-export const useIsSameDay = (dateLeft: Asdate, dateRight: Asdate) => {
-  return isSameDay(useToDate(dateLeft), useToDate(dateRight))
-}
 export const useToDate = (date: Asdate) => {
   const theDate = unref(date)
-  
-  if (typeof theDate === 'string') {
-    return parseISO(theDate)
-  }
 
-  if (typeof theDate === 'number') {
+  if (typeof theDate === 'string')
+    return parseISO(theDate)
+
+  if (typeof theDate === 'number')
     return toDate(theDate)
-  }
-  
-  return  theDate
+
+  return theDate
+}
+
+export const useIsSameDay = (dateLeft: Asdate, dateRight: Asdate) => {
+  return isSameDay(useToDate(dateLeft), useToDate(dateRight))
 }
 
 export const useFormatISO = (
   date: Asdate,
   options?: {
-    format?: 'extended' | 'basic';
-    representation?: 'complete' | 'date' | 'time';
-  }
+    format?: 'extended' | 'basic'
+    representation?: 'complete' | 'date' | 'time'
+  },
 ): string => {
   return callback({ date, options: [options] }, formatISO)
 }
 
-export const useSetDate = (date: Asdate, dayOfMonth: number):Date => {
-  
-  
+export const useSetDate = (date: Asdate, dayOfMonth: number): Date => {
   return callback({ date, options: [dayOfMonth] }, setDate)
 }
 
@@ -71,26 +68,24 @@ export const useSubMonths = (date: Asdate, amount: number) => {
 
 export const useEndOfMonth = (date: Asdate) => {
   const result = callback({ date }, endOfMonth)
-  
+
   return result
 }
 
-export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg=>unref(arg))
+export const useBatchUnref = (...args: Prop<any>[]) => args.map(arg => unref(arg))
 
 export const useSetFormatForSingleDate = (date: Asdate, dateFormat: Prop<String>) => {
   const [d, f] = useBatchUnref(date, dateFormat)
 
-  if (typeof d === 'string') {
+  if (typeof d === 'string')
     return format(useToDate(parseISO(d)), f)
-  }
 
   return format(d, f)
 }
 export const useSetFormat: UseSetFormat = (date, dateFormat) => {
-  const cb = (d: any, f: any)=>callback({ date:d, options: [f] }, useSetFormatForSingleDate)
-  if (Array.isArray(date)) {
-    return date.map((d=>cb(d, dateFormat)))
-  }
+  const cb = (d: any, f: any) => callback({ date: d, options: [f] }, useSetFormatForSingleDate)
+  if (Array.isArray(date))
+    return date.map(d => cb(d, dateFormat))
 
   return cb(date, dateFormat)
 }
@@ -101,9 +96,8 @@ export const useGetDate = (date: Prop<Date | number>) => {
 
 export const useDatesStringToNumber = (d: Strings) => {
   const date = unref(d)
-  if (Array.isArray(date)) {
+  if (Array.isArray(date))
     return date.map((dt: string) => getDate(parseISO(dt)))
-  }
 
   return getDate(parseISO(date))
 }
@@ -119,7 +113,7 @@ export const useBillingDay = (billdays: number[], startday: number) => {
   return soretrdBillingDays[0]
 }
 
-export const useDifferenceInCalendarDay = (start: Asdate, end: Asdate): number => { 
+export const useDifferenceInCalendarDay = (start: Asdate, end: Asdate): number => {
   return differenceInCalendarDays(useToDate(start), useToDate(end))
 }
 
@@ -137,10 +131,10 @@ export const usePricCalc = (
   difference: Prop<number>,
   lesThen: Prop<number>,
   priceAfterPerscent: Prop<number>,
-  daysInMonth: Prop<number>
+  daysInMonth: Prop<number>,
 ) => {
   return unref(difference) <= unref(lesThen)
-    ?  Math.abs(unref(difference)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
+    ? Math.abs(unref(difference)) * (unref(priceAfterPerscent) / unref(daysInMonth)) + unref(priceAfterPerscent)
     : unref(priceAfterPerscent)
 }
 
@@ -158,12 +152,12 @@ export const useGeResultValue = (
   endDate: Prop<Date>,
   maxRange: Prop<number>,
   priceAfterPerscent: Prop<number>,
-  round: Prop<number>
+  round: Prop<number>,
 ) => {
-  const daysinmonth = getDaysInMonth(useToDate(startDate))  
-  const difference = Math.abs(useDifferenceInCalendarDay(startDate, endDate))  
-  
-  const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)  
+  const daysinmonth = getDaysInMonth(useToDate(startDate))
+  const difference = Math.abs(useDifferenceInCalendarDay(startDate, endDate))
+
+  const calculatedPrice = usePricCalc(difference, unref(maxRange), priceAfterPerscent, daysinmonth)
 
   return useRoundUp(calculatedPrice, unref(round))
 }
@@ -174,7 +168,7 @@ export const useGeResultValues = (
   difference: number[] | Ref<number[]>,
   maxRange: Prop<number>,
   priceAfterPerscent: Prop<number>,
-  round: Prop<number>
+  round: Prop<number>,
 ) => {
   const daysInMonth = unref(dates).map(d => useGetDaysInMonth(d))
   const diff = unref(difference)
@@ -187,15 +181,14 @@ export const useGeResultValues = (
   })
 }
 
-
-function callback<T extends { date: any, options?: any[] }, R extends Function>(data: T, cb: R) {
+function callback<T extends { date: any; options?: any[] }, R extends Function>(data: T, cb: R) {
   try {
-    let d = useToDate(data.date)
-  let o = data.options || []
+    const d = useToDate(data.date)
+    const o = data.options || []
 
-  return cb(d, ...o)
-  } catch (error) {
-    
-    
+    return cb(d, ...o)
+  }
+  catch (error) {
+
   }
 }

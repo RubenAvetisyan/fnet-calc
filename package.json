@@ -13,6 +13,14 @@
     "ionic:build": "pnpm run generate",
     "ionic:serve": "pnpm run serve"
   },
+  "dependencies": {
+    "@capacitor/app": "4.0.1",
+    "@capacitor/cli": "4.2.0",
+    "@capacitor/core": "4.2.0",
+    "@capacitor/haptics": "4.0.1",
+    "@capacitor/keyboard": "4.0.1",
+    "@capacitor/status-bar": "4.0.1"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.2",
     "@capacitor/android": "^4.2.0",
@@ -30,13 +38,5 @@
     "nuxt-ionic": "^0.7.0",
     "pinia": "^2.0.21",
     "typescript": "^4.8.2"
-  },
-  "dependencies": {
-    "@capacitor/app": "4.0.1",
-    "@capacitor/cli": "4.2.0",
-    "@capacitor/core": "4.2.0",
-    "@capacitor/haptics": "4.0.1",
-    "@capacitor/keyboard": "4.0.1",
-    "@capacitor/status-bar": "4.0.1"
   }
 }

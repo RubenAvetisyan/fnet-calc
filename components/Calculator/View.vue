@@ -2,7 +2,6 @@
 import { storeToRefs } from 'pinia'
 // import { subMonths } from 'date-fns'
 
-
 const props = defineProps({
   price: { type: Number, required: true },
   percent: { type: Number, required: true },
@@ -23,7 +22,7 @@ const startDateAsString = computed(() => {
   return useSetFormat(startDay, FORMAT)
 })
 const anjatmanOr = computed(() => {
-  return billdays.value.map(billday => {
+  return billdays.value.map((billday) => {
     const sub = useDifferenceInCalendarDay(useSetDate(startDate, billday), startDate)
 
     const nextMonth = useAddMonths(startDay, 1)
@@ -33,7 +32,7 @@ const anjatmanOr = computed(() => {
 })
 
 const filteredDays = computed(() => {
-  return anjatmanOr.value.filter(day => {
+  return anjatmanOr.value.filter((day) => {
     const diff = useDifferenceInCalendarDay(day, startDay)
 
     const res = diff >= 0
@@ -60,7 +59,7 @@ const result = computed(() => {
 const items = computed(() => {
   return [`Միացման օր՝ ${useSetFormat(unref(startDate), 'dd/MM/yyyy')}`,
     `Անջատման օր՝ ${useSetFormat(unref(endDate), 'dd/MM/yyyy')}`,
-    `Վճարման ենթակա գումար՝ ${unref(result)}դր.`
+    `Վճարման ենթակա գումար՝ ${unref(result)}դր.`,
   ]
 })
 
@@ -84,18 +83,18 @@ const config = ref({
   endDate: {
     min: useFormatISO(startDate),
     max: useFormatISO(useAddMonths(Date.now(), 1)),
-  }
+  },
 })
 
 const initiator = ref('')
 watch(() => {
   return {
     start: startDay.value,
-    end: endDay.value
+    end: endDay.value,
   }
 }, ({ start, end }, { start: oldStart, end: oldEnd }) => {
-
-  if (start === oldStart && end === oldEnd) return
+  if (start === oldStart && end === oldEnd)
+    return
 
   const difference = useDifferenceInCalendarDay(end, start)
 
@@ -121,50 +120,57 @@ watch(() => {
   }
 
   initiator.value = ''
-
 })
 </script>
 
-<template><ion-card>
-  <ion-card-header mb-0>
-    <ion-card-subtitle mb-0>Ծառայության մատուցման`</ion-card-subtitle>
-  </ion-card-header>
-  <ion-card-content>
-    <grid>
-      <row>
-        <i-col>
-        </i-col>
-      </row>
-      <row class="ion-align-items-center">
-        <i-col>
-          <my-button id="open-end-modal" identity="endDate" expand="block" color="primary" fill="solid" justify="center">
-            Անջատման օր` {{endDateAsString}}
-          </my-button>
+<template>
+  <ion-card>
+    <ion-card-header mb-0>
+      <ion-card-subtitle mb-0>
+        Ծառայության մատուցման`
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <grid>
+        <row>
+          <i-col />
+        </row>
+        <row class="ion-align-items-center">
+          <i-col>
+            <my-button id="open-end-modal" identity="endDate" expand="block" color="primary" fill="solid" justify="center">
+              Անջատման օր` {{ endDateAsString }}
+            </my-button>
           </i-col>
           <i-col>
             <my-button id="open-start-modal" identity="startDate" expand="block" color="primary" fill="outline" justify="center">
-              Միացման օր` {{startDateAsString}}</my-button>
-            </i-col>
-            </row>
-            <row>
-            <ion-label color="warning"><span class="text-size-0.8rem">ակտիվ օրերի քանակ (հավելյալ)՝ {{ activeDays
-                }}</span>
-        </ion-label>
-      </row>
-    </grid>
-    <List :items="items">
-      <template #headtext>
-        <span class="text-purple-700 font-bold text-size-1rem">Գանձման ենթակա գումար.</span>
-      </template>
-    </List>
-    <modal :is-open="endDateModalShow">
-      <CalculatorCalendar id="endDate" v-model="endDay" :min="config.endDate.min" :is-date-eabled="isDateEabled"
-        :max="config.endDate.max" title="Նշել անջատման օրվա ամսաթիվը" />
-    </modal>
-    <modal :is-open="startDateModalShow">
-      <CalculatorCalendar id="startDate" v-model="startDay" :min="config.startDate.min"
-        title="Նշել միացման օրվա ամսաթիվը" />
-    </modal>
-  </ion-card-content>
+              Միացման օր` {{ startDateAsString }}
+            </my-button>
+          </i-col>
+        </row>
+        <row>
+          <ion-label color="warning">
+            <span class="text-size-0.8rem">ակտիվ օրերի քանակ (հավելյալ)՝ {{ activeDays
+            }}</span>
+          </ion-label>
+        </row>
+      </grid>
+      <List :items="items">
+        <template #headtext>
+          <span class="text-purple-700 font-bold text-size-1rem">Գանձման ենթակա գումար.</span>
+        </template>
+      </List>
+      <modal :is-open="endDateModalShow">
+        <CalculatorCalendar
+          id="endDate" v-model="endDay" :min="config.endDate.min" :is-date-eabled="isDateEabled"
+          :max="config.endDate.max" title="Նշել անջատման օրվա ամսաթիվը"
+        />
+      </modal>
+      <modal :is-open="startDateModalShow">
+        <CalculatorCalendar
+          id="startDate" v-model="startDay" :min="config.startDate.min"
+          title="Նշել միացման օրվա ամսաթիվը"
+        />
+      </modal>
+    </ion-card-content>
   </ion-card>
 </template>
