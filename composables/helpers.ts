@@ -58,7 +58,7 @@ export const useSubDays = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, subDays)
 }
 
-export const useAddMonths = (date: Asdate, amount: number) => {
+export const useAddMonths = (date: Asdate, amount: number): Date => {
   return callback({ date, options: [amount] }, addMonths)
 }
 

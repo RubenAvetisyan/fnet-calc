@@ -1,5 +1,5 @@
 <template>
-  <ion-row class="flex flex-row">
+  <ion-row>
     <slot />
   </ion-row>
 </template>

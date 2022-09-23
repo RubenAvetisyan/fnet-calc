@@ -34,10 +34,8 @@ const oninput = (value: number) => {
 </script>
 
 <template>
-  <ion-input
-    id="input" :value="modelValue || num" type="number" inputmode="number" color="medium"
-    :placeholder="placeholder" autocomplete="off" p="x-4 y-2" m="t-1 x-1" text="center" bg="transparent"
-    border="~ rounded gray-200 dark:gray-700" outline="none active:none" :max="max" :maxlength="maxLength"
-    @input="(event: any) => $emit('update:modelValue', oninput(parseInt(event.target.value)))"
-  />
+  <ion-input id="input" :value="modelValue || num" type="number" inputmode="number" color="medium"
+    :placeholder="placeholder" autocomplete="off" text="center" bg="transparent" border="~ rounded purple-300"
+    outline="none active:none" :max="max" :maxlength="maxLength"
+    @input="(event: any) => $emit('update:modelValue', oninput(parseInt(event.target.value)))" />
 </template>

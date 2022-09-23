@@ -26,4 +26,4 @@ export const useCalcStore = defineStore('calculator', {
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useCalendarStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useCalcStore, import.meta.hot))
