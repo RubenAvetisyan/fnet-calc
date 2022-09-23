@@ -6,17 +6,15 @@
           <Logos />
         </ion-toolbar>
       </ion-header>
-      <ion-content
-        color="light" :fullscreen="true"
-        class="ion-padding h-full items-center content-center text-center self-center px-10 w-full text-center ion-justify-content-center"
-      >
+      <ion-content color="light dark:dark" :fullscreen="true"
+        class="ion-padding h-full items-center content-center text-center self-center px-10 w-full text-center ion-justify-content-center">
         <slot />
       </ion-content>
       <ion-footer v-if="$slots.footer" color="medium" pos="bottom-0 fixed" align="items-center content-center">
         <slot name="footer" />
       </ion-footer>
-    </ion-page>
-  </ion-app>
+      </ion-page>
+      </ion-app>
 </template>
 
 <style lang="css">
