@@ -74,7 +74,7 @@ const items = computed(() => {
     `Վճարման ենթակա գումար՝ ${finalPrice.value}դր.`
   ]
 
-  const recomendedPay = `Վճարման ենթակա գումարը կլորացումով (մինչև ${recomendedPrice.value}դր.)՝ ${finalPrice.value}դր.`
+  const recomendedPay = `Վճարման ենթակա գումարը կլորացումով՝ ${recomendedPrice.value}դր.`
 
   if (finalPrice.value !== recomendedPrice.value) finalResult.push(recomendedPay)
 
