@@ -133,6 +133,10 @@ watch(() => {
   if (end !== oldEnd && initiator.value !== 'startDay' && (difference < 1 || difference > 30)) {
     initiator.value = 'endDay'
     const nearestDay = useSetNextEndDay(end, billdays, 'sub')
+    const today = useSetFormatForSingleDate(new Date(), FORMAT)
+
+    if (end === today && end === startDay.value) return
+
     startDay.value = useSetFormatForSingleDate(nearestDay, FORMAT)
     return
   }
