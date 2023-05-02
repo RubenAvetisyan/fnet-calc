@@ -1,12 +1,10 @@
-import { defineNuxtConfig } from 'nuxt'
-
 export default defineNuxtConfig({
   ssr: false,
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
     '@pinia/nuxt',
-    'nuxt-ionic',
+    '@nuxtjs/ionic',
     '@nuxtjs/color-mode',
   ],
   // ionic: {
@@ -21,10 +19,11 @@ export default defineNuxtConfig({
   // },
   experimental: {
     reactivityTransform: true,
-    viteNode: false,
   },
   unocss: {
     preflight: true,
+    attributify: true,
+    icons: true,
   },
   colorMode: {
     classSuffix: '',
@@ -40,16 +39,18 @@ export default defineNuxtConfig({
   //   },
   // },
 
-  head: {
-    title: 'Netcalc - fNet Telecom',
-    htmlAttrs: {
-      lang: 'hy',
+  app: {
+    head: {
+      title: 'Netcalc - fNet Telecom',
+      htmlAttrs: {
+        lang: 'hy',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' },
+      ],
     },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Family Networc Telecom - Price calculator for exact tariffs' },
-    ],
   },
 
   css: ['~/assets/core.css'],
