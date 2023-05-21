@@ -14,31 +14,5 @@
         <slot name="footer" />
       </ion-footer>
       </ion-page>
-      </ion-app>
+    </ion-app>
 </template>
-
-<style lang="css">
-.page {
-  background: green
-}
-.header-md::after {
-
-  left: 0;
-
-  bottom: -5px;
-
-  background-position: left 0 top -2px;
-
-  position: absolute;
-
-  width: 100%;
-
-  height: 5px;
-
-  background-image: none;
-
-  background-repeat: repeat-x;
-
-  content: "";
-}
-</style>

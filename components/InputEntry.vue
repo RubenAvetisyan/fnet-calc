@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const props = defineProps({
+  id: {
+    type: String,
+    defult: 'input'
+  },
   modelValue: {
     type: Number,
     required: true,
@@ -34,8 +38,8 @@ const oninput = (value: number) => {
 </script>
 
 <template>
-  <ion-input id="input" :value="modelValue || num" type="number" inputmode="number" color="medium"
-    :placeholder="placeholder" autocomplete="off" text="center" bg="transparent" border="~ rounded purple-300"
+    <ion-input :id="id" :value="modelValue || num" type="number" inputmode="number" color="medium"
+            :placeholder="placeholder" autocomplete="off" text="center" bg="transparent" border="~ rounded" b-indigo-300
     outline="none active:none" :max="max" :maxlength="maxLength"
     @input="(event: any) => $emit('update:modelValue', oninput(parseInt(event.target.value)))" />
 </template>

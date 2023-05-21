@@ -1,5 +1,7 @@
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
-  ssr: false,
+  // ssr: false,
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
@@ -7,16 +9,20 @@ export default defineNuxtConfig({
     '@nuxtjs/ionic',
     '@nuxtjs/color-mode',
   ],
-  // ionic: {
-  //   integrations: {
-  //     pwa: true
-  //   },
-  //   css: {
-  //     basic:true,
-  //     core: true,
-  //     utilities: true
-  //   }
-  // },
+  routeRules: {
+    '/': { ssr: false },
+    '/calc': { ssr: false }
+  },
+  ionic: {
+    integrations: {
+      pwa: true
+    },
+    css: {
+      basic: true,
+      core: true,
+      utilities: true
+    }
+  },
   experimental: {
     reactivityTransform: true,
   },

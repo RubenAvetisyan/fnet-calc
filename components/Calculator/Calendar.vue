@@ -65,21 +65,19 @@ const maxDate = computed(() => {
 </script>
 
 <template>
-  <ion-datetime
-    :id="id" ref="datetime" :name="id" size="cover" locale="hy" :presentation="dateTime"
-    :first-day-of-week="1" :multiple="multiple" :value="modelValue" :show-default-buttons="true" done-text="Հաստատել"
-    cancel-text="Թողնել նույնը" :min="min" :max="maxDate" :day-values="dayValues" :is-date-enabled="isDateEabled"
-    :title="title" @ion-change="(event: any) => $emit('update:modelValue', event.detail.value)"
-  >
-    <template #title>
-      <span v-if="title">{{ title }}</span>
-    </template>
-    <template #buttons>
-      <ion-buttons>
-        <ion-button color="primary" @click="cancel(id as Identifire)">
-          Թողնել նույնը
-        </ion-button>
-        <ion-button color="primary" @click="confirm(id as Identifire)">
+        <ion-datetime :id="id" ref="datetime" :name="id" size="cover" locale="hy" :presentation="dateTime"
+          :first-day-of-week="1" :multiple="multiple" :value="modelValue" :show-default-buttons="true" done-text="Հաստատել"
+          cancel-text="Թողնել նույնը" :min="min" :max="maxDate" :day-values="dayValues" :is-date-enabled="isDateEabled"
+          :title="title" @ion-change="(event: any) => $emit('update:modelValue', event.detail.value)">
+          <template #title>
+            <span v-if="title">{{ title }}</span>
+          </template>
+          <template #buttons>
+            <ion-buttons>
+              <ion-button @click="cancel(id as Identifire)" color="primary" fill="outline">
+                Թողնել նույնը
+              </ion-button>
+              <ion-button @click="confirm(id as Identifire)" color="primary" fill="solid">
           Հաստատել
         </ion-button>
       </ion-buttons>

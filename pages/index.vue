@@ -31,7 +31,7 @@ const { percent, price, priceAfterDiscount } = storeToRefs(useCalcStore())
           <ion-label color="primary" position="fixed align-bottom" class="font-bold text-size-1rem">
             Գումար
           </ion-label>
-          <InputEntry :value="useRoundUp(priceAfterDiscount, 1)" class="font-bold" readonly />
+            <InputEntry :value="useRoundUp(priceAfterDiscount.value, 1)" class="font-bold" readonly />
         </i-col>
       </row>
       </grid>

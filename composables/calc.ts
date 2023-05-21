@@ -14,7 +14,7 @@ export const useCalcStore = defineStore('calculator', {
     }
   },
   actions: {
-    updatePtice(value: number) {
+    updatePrice(value: number) {
       this.price = value
     },
   },
